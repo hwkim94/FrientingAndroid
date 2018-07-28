@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#87dff7"
+        android:centerColor="#ffcaf3d3"
+        android:endColor="#fff5f6ac"
+        android:angle="0"
+        android:centerY="0.37" />
+</shape>
+
+    <!--노랑 이건 어떤지 FFF25C-->
+

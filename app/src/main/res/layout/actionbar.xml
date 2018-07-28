@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#ffffff"
+    android:layout_height="40dp">
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:layout_gravity="center"
+        android:src="@drawable/back_arrow"
+        android:id="@+id/actionbar_back"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:id="@+id/actionbar_name"
+        android:text=""/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingRight="12dp"
+        android:id="@+id/actionbar_ting_container"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/frienting_gray_logo"
+            android:layout_marginRight="4dp"
+            android:id="@+id/actionbar_ting"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:id="@+id/actionbar_now_ting"
+            android:text="00" />
+    </LinearLayout>
+
+</RelativeLayout>

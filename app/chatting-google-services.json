@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "334273366672",
+    "firebase_url": "https://frientingchatting.firebaseio.com",
+    "project_id": "frientingchatting",
+    "storage_bucket": "frientingchatting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334273366672:android:3203f1eed40d8bdd",
+        "android_client_info": {
+          "package_name": "com.building.frienting001"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334273366672-6bot1h94v6u06gn0ph3de8d7i7uqk5dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcPnd4KaBacemcTfmKutLFlQ9Qt7D2IeI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

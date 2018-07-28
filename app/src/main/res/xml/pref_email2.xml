@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="계정 휴면 및 삭제">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="example_switch"
+            android:summary="활동을 중지합니다."
+            android:title="계정휴면" />
+
+        <Preference android:title="계정탈퇴">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

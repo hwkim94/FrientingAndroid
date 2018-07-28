@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:paddingLeft="8dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio_group">
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text= "제목"
+            android:id="@+id/radio_btn_title"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text= "해시태그"
+            android:id="@+id/radio_btn_hashTag"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text= "장소"
+            android:id="@+id/radio_btn_place"/>
+
+    </RadioGroup>
+</LinearLayout>

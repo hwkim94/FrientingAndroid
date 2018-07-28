@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FEFEFE"
+        android:orientation="vertical"
+        tools:context="com.building.frienting001.PaymentActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#d3d3d3"
+                android:layout_centerInParent="true"
+                android:text="현재 보유 팅"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/temp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/temp"
+                android:layout_centerInParent="true"
+                android:paddingBottom="10dp"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/payment_ting1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textStyle="bold"
+                    android:id="@+id/payment_now_ting"
+                    android:textColor="@color/frienting_widget"
+                    android:textSize="25dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:paddingTop="8dp"
+                android:paddingRight="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="충전내역(준비중) >"
+                android:textSize="13dp"
+                android:textColor="#ffcb05"
+                android:textStyle="bold"
+                android:id="@+id/payment_history"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="팅 구매하기"
+            android:background="@drawable/border_black"
+            android:paddingTop="6dp"
+            android:paddingLeft="16dp"
+            android:textStyle="bold"
+            android:paddingBottom="6dp"
+            android:textSize="13dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/border_black"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/payment_ting1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:textSize="18dp"
+                android:textColor="@color/frienting_widget"
+                android:text="1000 (개당 123.5원)"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:background="#979797"
+                android:text="$120.99"
+                android:textColor="#ffffff"
+                android:id="@+id/payment_1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/border_black"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/payment_ting2"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:textSize="18dp"
+                android:textColor="#91d7e3"
+                android:text="500 (개당 131.3원)"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:background="#979797"
+                android:text="$60.49"
+                android:id="@+id/payment_2"
+                android:textColor="#ffffff"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/border_black"
+            android:paddingRight="16dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/payment_ting3"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:textColor="#a7dcda"
+                android:text="300 (개당 132.9원)"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:background="#979797"
+                android:text="$38.49"
+                android:id="@+id/payment_3"
+                android:textColor="#ffffff"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingRight="16dp"
+            android:background="@drawable/border_black"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/payment_ting4"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:textSize="18dp"
+                android:textColor="#bce1cf"
+                android:text="100 (개당 136.9원)"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:background="#979797"
+                android:text="$13.19"
+                android:id="@+id/payment_4"
+                android:textColor="#ffffff"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingRight="16dp"
+            android:background="@drawable/border_black"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/payment_ting5"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:textSize="18dp"
+                android:textColor="#d0e8c3"
+                android:text="70 (개당 142.6원)"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:background="#979797"
+                android:text="$9.89"
+                android:id="@+id/payment_5"
+                android:textColor="#ffffff"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/border_black"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:src="@drawable/payment_ting6"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:textSize="18dp"
+                android:textColor="#eff4b7"
+                android:text="30 (개당 149.3원)"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:background="#979797"
+                android:text="$4.39"
+                android:id="@+id/payment_6"
+                android:textColor="#ffffff"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingLeft="24dp"
+            android:gravity="center_vertical"
+            android:id="@+id/payment_free"
+            android:text="무료 충전소 >"
+            android:background="#d3d3d3"/>
+
+        <RelativeLayout
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id">
+            </com.google.android.gms.ads.AdView>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</ScrollView>

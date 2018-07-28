@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEFEFE"
+    android:onClick="hide_keyboard3"
+    tools:context="com.building.frienting001.ChattingActivity">
+
+    <Button
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:text="***"
+        android:textSize="17dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/round_btn"
+        android:id="@+id/chatting_setting" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#dddd"
+        android:gravity="center"
+        android:visibility="visible"
+        android:id="@+id/chatting_warning"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/warning"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="이상한 요구(금전, 장소 등)을 한다면\n대화를 중단하고 해당 내용을 신고해주세요."
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 내용을 숙지하였습니다."
+            android:textStyle="bold"
+            android:id="@+id/chatting_warning_ok"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/chatting_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chatting_LinearLayout"
+        android:stackFromBottom="true"
+        android:visibility="gone"
+        android:divider="@android:color/transparent"
+        android:transcriptMode="alwaysScroll"
+        tools:listitem="@layout/chatting_message_item" />
+
+    <LinearLayout
+        android:id="@+id/chatting_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@drawable/border_black"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/chatting_photo"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:visibility="gone"
+            android:background="@android:drawable/ic_menu_gallery" />
+
+        <EditText
+            android:id="@+id/chatting_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:maxHeight="100dp"
+            android:layout_gravity="center_vertical"
+            android:maxLines="6"
+            android:background="@drawable/rectangle_edittext"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/chatting_send"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:enabled="false"
+            android:background="@color/frienting_widget"
+            android:text="보내기"/>
+
+    </LinearLayout>
+</RelativeLayout>

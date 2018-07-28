@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="종류">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="example_switch"
+            android:title="전화번호부 친구 차단" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="example_switch"
+            android:title="카카오톡 친구 차단" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="example_switch"
+            android:title="페이스북 친구 차단" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="선택사항">
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/recommend"
+            android:inputType="textCapWords"
+            android:key="example_text"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="직업" />
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/recommend"
+            android:inputType="textCapWords"
+            android:key="example_text"
+            android:maxLines="3"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="자기 소개" />
+
+        <ListPreference
+            android:defaultValue="-1"
+            android:entries="@array/pref_example_list_titles"
+            android:entryValues="@array/pref_example_list_values"
+            android:key="example_list"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="대표적 성격 3가지" />
+    </PreferenceCategory>
+</PreferenceScreen>

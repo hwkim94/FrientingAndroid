@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_main"
+        android:icon="@drawable/navi_main_selector"
+        android:title="홈" />
+
+    <item
+        android:id="@+id/navigation_bulletinboard"
+        android:icon="@drawable/navi_bulletin_selector"
+        android:title="모집공고" />
+
+    <item
+        android:id="@+id/navigation_writing"
+        android:icon="@drawable/navi_write_selector"
+        android:title="글쓰기" />
+
+    <item
+        android:id="@+id/navigation_chatting"
+        android:icon="@drawable/navi_my_selector"
+        android:title="마이" />
+
+    <item
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/navi_setting_selector"
+        android:title="설정" />
+
+</menu>

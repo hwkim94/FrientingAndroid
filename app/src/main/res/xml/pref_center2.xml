@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="고객약관 및 정책">
+
+        <Preference android:title="이용약관">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+
+        <Preference android:title="개인정보 정책">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+
+        <Preference android:title="운영 정책">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+
+        <Preference android:title="광고/제휴 정책">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

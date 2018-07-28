@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#FEFEFE"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.building.frienting001.Login_SignUp_EmailActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:layout_gravity="right"
+        android:gravity="center_vertical"
+        android:text="Cancel"
+        android:textSize="15dp"
+        android:textColor="#87dff7"
+        android:background="@color/color_transparent"
+        android:id="@+id/signup_email_back_btn"/>
+    <TextView
+        android:layout_marginTop="47dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13dp"
+        android:background="#F7F7F7"
+        android:gravity="center"
+        android:text="프렌팅은 고객들의 안전을 위해 2단계 인증방식을 사용합니다.\n고객님의 계정은 절대로 공개되지 않으며,\n본인인증과 비밀번호 찾기 용도로만 사용됩니다. "/>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="18dp"
+            android:textColor="#87dff7"
+            android:text="Email address" />
+        <EditText
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:inputType="text"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:lines = "1"
+            android:layout_height="40dp"
+            android:imeOptions="actionNext"
+            android:hint="인증메일을 받을 수 있는 이메일"
+            android:textSize="15dp"
+            android:id="@+id/signup_email"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="18dp"
+            android:text="Password"
+            android:textColor="#87dff7"/>
+        <EditText
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:lines = "1"
+            android:textSize="15dp"
+            android:hint="6자리~20자리(숫자나 특수문자 중 1개 포함)"
+            android:id="@+id/signup_pw"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="18dp"
+            android:text="Password Check"
+            android:textColor="#87dff7" />
+
+        <EditText
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:inputType="text"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:lines = "1"
+            android:layout_height="40dp"
+            android:imeOptions="actionDone"
+            android:textSize="15dp"
+            android:id="@+id/signup_pw2"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="right"
+            android:text="Next"
+            android:textSize="20dp"
+            android:textColor="#87dff7"
+            android:background="@color/color_transparent"
+            android:id="@+id/signup_email_next_btn"/>
+    </LinearLayout>
+
+</RelativeLayout>

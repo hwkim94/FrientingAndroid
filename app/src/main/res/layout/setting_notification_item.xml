@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:paddingLeft="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="(날짜) 제목"
+        android:textSize="13dp"
+        android:gravity="center_vertical"
+        android:id="@+id/setting_noti_title"/>
+
+    <TextView
+        android:background="#EDEAEA"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/setting_noti_text"
+        android:text="내용\n내용\n내용\n내용\n내용\n내용\n내용\n"
+        android:visibility="gone"/>
+</LinearLayout>

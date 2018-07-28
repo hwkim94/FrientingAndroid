@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="계정 정보">
+        <Preference android:title="결제 정보">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:inputType="textCapWords"
+            android:key="example_text"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="비밀번호 변경" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
