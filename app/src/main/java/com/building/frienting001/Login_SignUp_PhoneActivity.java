@@ -75,6 +75,8 @@ public class Login_SignUp_PhoneActivity extends AppCompatActivity {
             }
         });
 
+        // userInfo 전역변수 초기화하는 부분 추가하기
+
         //회원가입 취소
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,8 +112,13 @@ public class Login_SignUp_PhoneActivity extends AppCompatActivity {
                 String auth = ""+result;
                 if (auth.equals(authNumber.getText().toString())){
                     Toast.makeText(getApplicationContext(), "정상적으로 인증되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    UserInfo userInfo = (UserInfo)getApplication();
+                    userInfo.setPhone(phone);
+
                     Intent intent = new Intent(Login_SignUp_PhoneActivity.this, Login_SignUp_EmailActivity.class);
-                    intent.putExtra("phone", phone);
+                    //intent.putExtra("phone", phone);
+
                     /*Bundle params1 = new Bundle();
                     params1.putString("UserInfo", phone);
                     params1.putLong("ConfirmTime", System.currentTimeMillis());

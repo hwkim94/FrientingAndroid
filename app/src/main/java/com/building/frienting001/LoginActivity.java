@@ -53,8 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
         FirebaseApp AuthApp_user = FirebaseApp.getInstance("user");
         userAuth = FirebaseAuth.getInstance(AuthApp_user);
-        userDBRef = FirebaseDatabase.getInstance(AuthApp_user).getReference().child("user");
-        // user DB 연동
+        userDBRef = FirebaseDatabase.getInstance(AuthApp_user).getReference().child("user"); // user DB 연동
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //선언부
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                userInfo = userAuth.getCurrentUser();
+                userInfo = userAuth.getCurrentUser(); //comment out later
                 searchDB(userInfo.getUid());
                 /*if (userInfo != null) { // User is signed in
                     if (userInfo.isEmailVerified()) {
@@ -166,20 +165,19 @@ public class LoginActivity extends AppCompatActivity {
         userDBRef.child(searchedText).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
+                UserInfo userInfo = (UserInfo)getApplication();
+                userInfo = dataSnapshot.getValue(UserInfo.class);
+                Log.d("myLog", userInfo.getEmail());
                 Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
-                intent.putExtra("userInfo", userInfo);
+                //intent.putExtra("userInfo", userInfo);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
 
-                Bundle params1 = new Bundle();
+                /*Bundle params1 = new Bundle();
                 params1.putString("UserUid", userInfo.getFirebaseUserUid());
                 params1.putLong("LogInTime", System.currentTimeMillis());
-                firebaseAnalytics.logEvent("LoginActivity", params1);
+                firebaseAnalytics.logEvent("LoginActivity", params1);*/
 
-                /*if(dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }*/
                 finish();
             }
             @Override

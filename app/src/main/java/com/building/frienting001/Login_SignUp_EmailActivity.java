@@ -120,7 +120,7 @@ public class Login_SignUp_EmailActivity extends AppCompatActivity {
                             Login_SignUp_EmailActivity.this);
                 }else{
                     Toast.makeText(getApplicationContext(), "가입 완료되었습니다. 계정과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
-                    UserInfo userInfo = new UserInfo();
+                    UserInfo userInfo = (UserInfo)getApplication();
                     userInfo.setEmail(email);
                     userDBReference.child(userAuth_user.getUid()).setValue(userInfo);
                     Intent intent = new Intent(Login_SignUp_EmailActivity.this, LoginActivity.class);
