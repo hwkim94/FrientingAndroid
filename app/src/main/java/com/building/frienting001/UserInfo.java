@@ -1,9 +1,9 @@
 package com.building.frienting001;
 
-import android.app.Application;
-//import java.io.Serializable;
+//import android.app.Application;
+import java.io.Serializable;
 
-public class UserInfo extends Application {
+public class UserInfo implements Serializable {
     // implements Serializable에서 변경. 매 액티비티마다 넘겨주는 구조에서 전역 클래스를 생성하여 사용하는 것으로 바꾸기 위함.
     // AndroidMenifest에 해당 전역 클래스 정보를 추가해둠
     private String phone = "";
