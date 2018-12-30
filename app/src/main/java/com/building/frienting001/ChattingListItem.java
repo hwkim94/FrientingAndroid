@@ -1,9 +1,5 @@
 package com.building.frienting001;
 
-/**
- * Created by LG_ on 2017-07-08.
- */
-
 //채팅목록을 담는 클래스
 public class ChattingListItem {
     private UserInfo userInfo;

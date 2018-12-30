@@ -18,7 +18,7 @@
         android:textSize="15dp"
         android:textColor="#87dff7"
         android:background="@color/color_transparent"
-        android:id="@+id/signup_phone_back_btn"/>
+        android:id="@+id/sup_cancel_button"/>
 
     <TextView
         android:paddingTop="30dp"
@@ -57,7 +57,7 @@
             android:imeOptions="actionDone"
             android:layout_height="40dp"
             android:hint="예) 01012345678"
-            android:id="@+id/signup_phone_number"/>
+            android:id="@+id/sup_phone_input"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -67,14 +67,14 @@
             android:textSize="15dp"
             android:textColor="@color/frienting_widget"
             android:text="인증번호 전송"
-            android:id="@+id/signup_phone_send"/>
+            android:id="@+id/sup_request_code_button"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/signup_after_send"
+        android:id="@+id/sup_code_input_layout"
         android:visibility="invisible">
         <EditText
             android:layout_marginLeft="16dp"
@@ -88,7 +88,7 @@
             android:lines = "1"
             android:imeOptions="actionDone"
             android:hint="인증번호를 입력하세요."
-            android:id="@+id/signup_phone_authnum"/>
+            android:id="@+id/sup_code_input"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -97,8 +97,8 @@
             android:background="@color/color_transparent"
             android:textSize="15dp"
             android:textColor="@color/frienting_widget"
-            android:text="인증번호 입력"
-            android:id="@+id/signup_phone_next_btn"/>
+            android:text="확인"
+            android:id="@+id/sup_request_auth_button"/>
     </LinearLayout>
 
 </LinearLayout>

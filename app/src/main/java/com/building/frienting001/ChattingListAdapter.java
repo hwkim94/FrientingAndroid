@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,88 +16,56 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.TreeSet;
 
 //채팅목록에 존재하는 채팅방을 보내주는 클래스
 public class ChattingListAdapter extends RecyclerView.Adapter {
     private Context context;
-    private List<ChattingListItem> chatting_list;
+    private List<RecruitmentItem> chatting_list;
 
-    private TreeSet<Integer> sectionHeader = new TreeSet<Integer>();
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_SEPARATOR = 1;
-    private int count=0;
+    final FirebaseApp user_app = FirebaseApp.getInstance("user");
+    FirebaseAuth user_auth = FirebaseAuth.getInstance(user_app);
 
     private View layoutView;
 
-    public ChattingListAdapter(Context context, List chatting_list) {
+    public ChattingListAdapter(Context context, List<RecruitmentItem> chatting_list) {
         this.context = context;
         this.chatting_list = chatting_list;
     }
 
-    public void addItemList(List<ChattingListItem> item){
-        if (item.size() >= 1) {
-            for (ChattingListItem chattingListItem : item) {
-                chatting_list.add(chattingListItem);
-                notifyDataSetChanged();
-            }
-        }
-    }
-
-    public void addItem(ChattingListItem item) {
-
-        if(item.getRecruitmentItem().getIs_finished() == false){
-            chatting_list.add(1,item);
-            count++;
-            renewItemViewType(count);
-        } else{chatting_list.add(chatting_list.size(),item);}
-        notifyDataSetChanged();
-    }
-
-    public void addSectionHeaderItem(ChattingListItem item) {
-        chatting_list.add(item);
-        sectionHeader.add(chatting_list.size()-1);
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemViewType(int position) {
-        return sectionHeader.contains(position) ? TYPE_SEPARATOR : TYPE_ITEM;
-    }
-
-    public void renewItemViewType(int count){
-        sectionHeader.clear();
-        sectionHeader.add(0);
-        sectionHeader.add(count+1);
+        if(chatting_list.get(position).getTitle().equals("진행현황")){
+            return 0;
+        }
+        else if(chatting_list.get(position).getTitle().equals("완료현황")){
+            return 0;
+        }
+        return 1;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        if (viewType == TYPE_SEPARATOR) {
+        if (viewType == 0) {
             layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_item, null, false);
             return new ChattingSectionHolder(layoutView);
         } else {
             layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatting_list_item, null, false);
             return new ChattingListHolder(layoutView);
-
         }
     }
 
-
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        int rowType = getItemViewType(position);
-        final RecruitmentItem recruitmentItem = chatting_list.get(position).getRecruitmentItem();
-        final UserInfo userInfo = chatting_list.get(position).getUserInfo();
-
-
-        switch (rowType){
-            case TYPE_ITEM:
+        final RecruitmentItem recruitmentItem = chatting_list.get(position);
+        switch (getItemViewType(position)){
+            case 1:
+                //Log.d("myLog", "case1");
                 final ChattingListHolder newHolder = (ChattingListHolder) holder;
                 newHolder.title.setText(recruitmentItem.getTitle());
 
@@ -109,27 +78,26 @@ public class ChattingListAdapter extends RecyclerView.Adapter {
                     newHolder.filter.setImageResource(R.drawable.filter);
                 }
 
-                if (!userInfo.getFirebaseUserUid().equals(recruitmentItem.getWriter_uid())){
+                if (!user_auth.getCurrentUser().getUid().equals(recruitmentItem.getWriter_uid())){
                     newHolder.crown.setVisibility(View.INVISIBLE);
                 }
 
-                List<String> searched_list = preprocessing2(recruitmentItem.getHashTag());
-                HashTagAdapter2 adapter = new HashTagAdapter2(holder.itemView.getContext(), searched_list);
+                List<String> searched_list = splitHashTag(recruitmentItem.getHashTag());
+                HashTagAdapter adapter = new HashTagAdapter(holder.itemView.getContext(), searched_list);
                 newHolder.hashTag.setHasFixedSize(true);
 
                 StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
                 newHolder.hashTag.setLayoutManager(layoutManager);
                 newHolder.hashTag.setAdapter(adapter);
 
-                List<String> list1 = preprocessing(recruitmentItem.getApplicant_uid());
-                newHolder.count.setText((list1.size()+1) +"/"+recruitmentItem.getDetail1());
+                newHolder.count.setText(recruitmentItem.getApplicant_uid().size() + "/" + recruitmentItem.getDetail1());
 
                 newHolder.recruitment.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
                         if(itemClick != null){
                             itemClick.onClick(v, position);
-                            if (newHolder.button.getVisibility() ==View.GONE){
+                            if (newHolder.button.getVisibility() == View.GONE){
                                 newHolder.button.setVisibility(View.VISIBLE);
                             }else{
                                 newHolder.button.setVisibility(View.GONE);
@@ -143,7 +111,7 @@ public class ChattingListAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         Intent intent = new Intent(context, RecruitmentBoardActivity.class);
                         intent.putExtra("recruitment", recruitmentItem);
-                        intent.putExtra("userInfo", chatting_list.get(position).getUserInfo());
+                        //intent.putExtra("userInfo", chatting_list.get(position).getUserInfo());
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         ActivityCompat.startActivity(context,intent, null);
@@ -153,11 +121,9 @@ public class ChattingListAdapter extends RecyclerView.Adapter {
                 newHolder.btn3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-
                         Intent intent = new Intent(context, ChattingActivity.class);
                         intent.putExtra("recruitment", recruitmentItem);
-                        intent.putExtra("userInfo", chatting_list.get(position).getUserInfo());
+                        //intent.putExtra("userInfo", chatting_list.get(position).getUserInfo());
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         ActivityCompat.startActivity(context, intent, null);
@@ -165,7 +131,8 @@ public class ChattingListAdapter extends RecyclerView.Adapter {
                 });
                 break;
 
-            case TYPE_SEPARATOR :
+            case 0 :
+                //Log.d("myLog", "case2");
                 final ChattingSectionHolder sectionHolder = (ChattingSectionHolder) holder;
                 sectionHolder.section.setText(recruitmentItem.getTitle());
                 break;
@@ -178,17 +145,13 @@ public class ChattingListAdapter extends RecyclerView.Adapter {
         return this.chatting_list.size();
     }
 
-
-
     public class ChattingSectionHolder extends RecyclerView.ViewHolder {
         TextView section;
         public ChattingSectionHolder(View itemView) {
             super(itemView);
-
             section = (TextView)itemView.findViewById(R.id.section_header);
         }
     }
-
     public class ChattingListHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView photo;
@@ -232,24 +195,15 @@ public class ChattingListAdapter extends RecyclerView.Adapter {
         this.itemClick = itemClick;
     }
 
-    private List<String> preprocessing(String s){
+    private List<String> splitHashTag(String s){
         List<String> list = new ArrayList<>();
-
         if(!s.equals("")){
-            String[] array = s.split("/");
-            list = Arrays.asList(array);
+            String[] array = s.split("#");
+            for(int i = 1; i < array.length; i++){
+                array[i] = "#" + array[i];
+                list.add(array[i]);
+            }
         }
-        return list;
-    }
-
-    private List<String> preprocessing2(String s){
-        List<String> list = new ArrayList<>();
-
-        if(!s.equals("")){
-            String[] array = s.split(" ");
-            list = Arrays.asList(array);
-        }
-
         return list;
     }
 

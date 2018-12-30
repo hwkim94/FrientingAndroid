@@ -3,6 +3,7 @@ package com.building.frienting001;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,9 @@ import java.util.List;
 //모집공고를 화면에 붙여주는 클래스
 public class BulletinListAdapter extends RecyclerView.Adapter {
     private Context context;
-    private List<com.building.frienting001.RecruitmentItem> recruit_list;
+    private List<RecruitmentItem> recruit_list;
 
-    public BulletinListAdapter(Context context, List recruit_list) {
+    public BulletinListAdapter(Context context, List<RecruitmentItem> recruit_list) {
         this.context = context;
         this.recruit_list = recruit_list;
     }
@@ -35,13 +36,13 @@ public class BulletinListAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         BulletinListHolder newHolder = (BulletinListHolder) holder;
 
-        if(recruit_list.get(position).getImagePath().equals("")){}
-        else {Glide.with(holder.itemView.getContext()).load(recruit_list.get(position).getImagePath()).into(newHolder.image);}
-
+        if(!recruit_list.get(position).getImagePath().equals("")){
+            Glide.with(holder.itemView.getContext()).load(recruit_list.get(position).getImagePath()).into(newHolder.image);
+        }
         newHolder.title.setText(recruit_list.get(position).getTitle());
-        newHolder.place.setText(recruit_list.get(position).getCity3());
-        newHolder.time.setText(recruit_list.get(position).getHelloTime() + "~" + recruit_list.get(position).getGoodbyeTime() );
-        newHolder.date.setText("20" +recruit_list.get(position).getHelloDate());
+        newHolder.place.setText(recruit_list.get(position).getPlace().get(2));
+        newHolder.time.setText(recruit_list.get(position).getTimeSearched());
+        newHolder.date.setText(recruit_list.get(position).getDateSearched());
 
         newHolder.container.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -52,14 +53,20 @@ public class BulletinListAdapter extends RecyclerView.Adapter {
             }
         });
 
-        List<String> searched_list = preprocessing(recruit_list.get(position).getHashTag());
+        List<String> searched_list = splitHashTag(recruit_list.get(position).getHashTag());
         HashTagAdapter adapter = new HashTagAdapter(holder.itemView.getContext(), searched_list);
         newHolder.recyclerView.setHasFixedSize(true);
 
-        int num;
-        if (searched_list.size()%2 ==1){num = searched_list.size()/2 +1;}
-        else{num = searched_list.size()/2;}
-        if (num ==0){num =1;}
+        int num = 0;
+        if ((searched_list.size() % 2) == 1){
+            num = (searched_list.size() / 2) + 1;
+        } else{
+            num = searched_list.size() / 2;
+        }
+
+        if (num == 0){
+            num = 1;
+        }
 
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(num, StaggeredGridLayoutManager.HORIZONTAL);
         newHolder.recyclerView.setLayoutManager(layoutManager);
@@ -88,8 +95,6 @@ public class BulletinListAdapter extends RecyclerView.Adapter {
             time = (TextView)itemView.findViewById(R.id.time);
             date = (TextView)itemView.findViewById(R.id.date);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.tag);
-
-
             container = itemView.findViewById(R.id.container);
         }
     }
@@ -102,14 +107,15 @@ public class BulletinListAdapter extends RecyclerView.Adapter {
         this.itemClick = itemClick;
     }
 
-    private List<String> preprocessing(String s){
+    private List<String> splitHashTag(String s){
         List<String> list = new ArrayList<>();
-
         if(!s.equals("")){
-            String[] array = s.split(" ");
-            list = Arrays.asList(array);
+            String[] array = s.split("#");
+            for(int i = 1; i < array.length; i++){
+                array[i] = "#" + array[i];
+                list.add(array[i]);
+            }
         }
-
         return list;
     }
 }

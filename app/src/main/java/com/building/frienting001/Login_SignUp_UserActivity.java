@@ -679,8 +679,8 @@ public class Login_SignUp_UserActivity extends AppCompatActivity {
                 Calendar cal = Calendar.getInstance();
                 String date = cal.YEAR +"/"+(cal.MONTH+1)+"/"+cal.DATE + " " + cal.HOUR_OF_DAY +":"+cal.MINUTE;
 
-                UserInfo userInfo = new UserInfo(phone, email, pw, s_imagePath, name, sex, birth, job, place, nickname, personality, s_hashTag,introduction, recommendation,20, "",user_uid, recruitment_uid, chatting_uid, log_uid, date, "", 0, new ReviewDialogItem("", "", ""),0, "","","");
-                userDBReference.child(user_uid).setValue(userInfo);
+                //UserInfo userInfo = new UserInfo(phone, email, pw, s_imagePath, name, sex, birth, job, place, nickname, personality, s_hashTag,introduction, recommendation,20, "",user_uid, recruitment_uid, chatting_uid, log_uid, date, "", 0, new ReviewDialogItem("", "", ""),0, "","","");
+                //userDBReference.child(user_uid).setValue(userInfo);
 
                 Bundle params1 = new Bundle();
                 params1.putString("UserUid", user_uid);
@@ -697,10 +697,10 @@ public class Login_SignUp_UserActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         String date = cal.YEAR +"/"+(cal.MONTH+1)+"/"+cal.DATE + " " + cal.HOUR_OF_DAY +":"+cal.MINUTE;
 
-        UserInfo userInfo = new UserInfo(phone, email, pw, "", name, sex, birth, job, place, nickname, personality, s_hashTag, introduction, recommendation,20, "",user_uid, recruitment_uid, chatting_uid, log_uid, date, "", 0, new ReviewDialogItem("", "", ""),0, "","","");
+        //UserInfo userInfo = new UserInfo(phone, email, pw, "", name, sex, birth, job, place, nickname, personality, s_hashTag, introduction, recommendation,20, "",user_uid, recruitment_uid, chatting_uid, log_uid, date, "", 0, new ReviewDialogItem("", "", ""),0, "","","");
 
 
-        userDBReference.child(user_uid).setValue(userInfo);
+        //userDBReference.child(user_uid).setValue(userInfo);
 
         Bundle params1 = new Bundle();
         params1.putString("UserUid", user_uid);

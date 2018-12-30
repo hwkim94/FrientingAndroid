@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-//모집공고를 화면에 붙여주는 클래스
 public class HashTagAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<String> recruit_list;
@@ -33,11 +32,7 @@ public class HashTagAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         BulletinListHolder newHolder = (BulletinListHolder) holder;
-
         newHolder.hashtag.setText(recruit_list.get(position).toString());
-
-
-
     }
 
     @Override

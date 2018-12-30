@@ -1,15 +1,17 @@
 package com.building.frienting001;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+//import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v7.app.AlertDialog;
+//import android.support.annotation.IdRes;
+//import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -40,10 +43,10 @@ import java.util.Vector;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class BulletinBoardFragment extends Fragment {
-    private StaggeredGridLayoutManager layoutManager;
-    private RecyclerView recyclerView;
-    private View view;
-    private BulletinListAdapter adapter;
+    private StaggeredGridLayoutManager layout_manager;
+    private RecyclerView recycler_view;
+    private View bulletin_view;
+    private BulletinListAdapter bulletin_adapter;
 
     private boolean loading = true;
     private int pastVisibleItems,visibleItemCount, totalItemCount;
@@ -55,31 +58,27 @@ public class BulletinBoardFragment extends Fragment {
     private ImageView searchMode;
     private String mode = "title";
 
-    private FirebaseAnalytics firebaseAnalytics;
+    //private FirebaseAnalytics firebaseAnalytics;
     private DatabaseReference databaseReference;
     private ProgressDialog dialog;
 
     private Bundle bundle;
-    private UserInfo userInfo;
 
     private InputMethodManager imm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         //선언부
-        view = inflater.inflate(R.layout.fragment_bulletin_board, container, false);
-        FirebaseApp recruitmentApp = FirebaseApp.getInstance("recruitment");
-        databaseReference = FirebaseDatabase.getInstance(recruitmentApp).getReference("recruitments");
+        bulletin_view = inflater.inflate(R.layout.fragment_bulletin_board, container, false);
+        FirebaseApp recruitmentApp = FirebaseApp.getInstance("user");
+        databaseReference = FirebaseDatabase.getInstance(recruitmentApp).getReference("recruitment");
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        //firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
 
-        searchText = (EditText)view.findViewById(R.id.searchText);
-        searchBtn = (Button)view.findViewById(R.id.searchBtn);
-        searchMode = (ImageView) view.findViewById(R.id.searchMode);
-        LinearLayout layout = (LinearLayout)view.findViewById(R.id.total_layout2);
-
-        bundle = getArguments();
-        userInfo = (UserInfo) bundle.getSerializable("userInfo");
+        searchText = (EditText)bulletin_view.findViewById(R.id.searchText);
+        searchBtn = (Button)bulletin_view.findViewById(R.id.searchBtn);
+        //searchMode = (ImageView) view.findViewById(R.id.searchMode);
+        LinearLayout layout = (LinearLayout)bulletin_view.findViewById(R.id.total_layout2);
 
         imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
         layout.setOnClickListener(new View.OnClickListener() {
@@ -89,16 +88,10 @@ public class BulletinBoardFragment extends Fragment {
             }
         });
 
-        //로그
-        Bundle params1 = new Bundle();
-        params1.putString("UserUid", userInfo.getFirebaseUserUid());
-        params1.putLong("OpenTime", System.currentTimeMillis());
-        firebaseAnalytics.logEvent("BulletinBoardFragment", params1);
-
-
         //전체보기 or 메인 화면에서 검색, 입력이 없을 경우 ""로 검색되기 때문에 모두 가져옴
-        String searchTextString = getArguments().getString("searchTextString");
-        searching(searchTextString);
+
+        //String searchTextString = getArguments().getString("searchTextString");
+        //searching(searchTextString);
 
         //검색버튼을 누르면 실행되는 코드
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -106,78 +99,9 @@ public class BulletinBoardFragment extends Fragment {
             public void onClick(View v) {
                 String searchTextString = searchText.getText().toString();
                 searching(searchTextString);
-
-                Bundle params = new Bundle();
-                params.putString("UserUid", userInfo.getFirebaseUserUid());
-                params.putString("SearchBtn", searchText.getText().toString());
-                params.putString("SearchMode", mode);
-                params.putLong("SearchTime", System.currentTimeMillis());
-                firebaseAnalytics.logEvent("BulletinBoardFragment", params);
             }
         });
-
-        searchMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRadioButtonDialog();
-
-            }
-        });
-
-        return view;
-    }
-
-    //검색모드 설정
-    private void showRadioButtonDialog() {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View convertView = (View) inflater.inflate(R.layout.search_mode_dialog_layout, null);
-
-        RadioGroup group= (RadioGroup)convertView.findViewById(R.id.radio_group);
-        RadioButton btn_title = (RadioButton)convertView.findViewById(R.id.radio_btn_title);
-        RadioButton btn_hashTag = (RadioButton)convertView.findViewById(R.id.radio_btn_hashTag);
-        RadioButton btn_place = (RadioButton)convertView.findViewById(R.id.radio_btn_place);
-
-        switch (mode){
-            case "title" :
-                btn_title.setChecked(true);
-                break;
-            case "city3" :
-                btn_place.setChecked(true);
-                break;
-            case "hashTag" :
-                btn_hashTag.setChecked(true);
-                break;
-        }
-
-        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (group.getCheckedRadioButtonId()){
-                    case R.id.radio_btn_title :
-                        mode = "title";
-                        break;
-                    case R.id.radio_btn_hashTag :
-                        mode ="hashTag";
-                        searchText.setHint("#한개만");
-                        break;
-                    case R.id.radio_btn_place :
-                        mode = "city3";
-                        break;
-                }
-            }
-        });
-
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setTitle("검색 카테고리 설정");
-        alertDialog.setMessage("어떤 주제로 검색하시겠습니까?");
-        alertDialog.setView(convertView);
-        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        alertDialog.show();
+        return bulletin_view;
     }
 
     //검색
@@ -187,84 +111,67 @@ public class BulletinBoardFragment extends Fragment {
         dialog.show();
 
         StringTokenizer token = new StringTokenizer(searchedText, ",. /;");
-        final Vector<String> vector = new Vector<String>();
+        final Vector<String> vector = new Vector<>();
         while(token.hasMoreTokens()) {
             vector.add((token.nextToken()));
         }
         try {
-            Query query = databaseReference.orderByChild(mode); //수정
+            Query query = databaseReference.orderByChild("helloTIme"); // 오름차순
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        final List<RecruitmentItem> searched_list = new ArrayList<>();
-                        int count = 0;
+                        final ArrayList<RecruitmentItem> searched_list = new ArrayList<>(); // 후에 json으로 수정하면 좋을듯
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             RecruitmentItem item = snapshot.getValue(RecruitmentItem.class);
-                            if(item.getIs_finished() == false) {
 
-                                String temp = "";
-                                for(int i = 0; i < vector.size(); i++) {
-                                    temp = vector.get(i);
-                                    if (item.getTitle().contains((temp)) || item.getCity3().contains(temp) || item.getHashTag().contains(temp)){
-                                        continue;
-                                    }
-                                    if(i == vector.size() - 1){
-                                        searched_list.add(item);
-                                    }
-                                    break;
-                                }
-
-                                /*switch (mode){
-                                    case "title" :
-                                        if(item.getTitle().contains(searchedText)){
-                                            searched_list.add(item);
-                                        }
-                                        break;
-                                    case "city3" :
-                                        if(item.getCity3().contains(searchedText)){
-                                            searched_list.add(item);
-                                        }
-                                        break;
-                                    case "hashTag" :
-                                        if(item.getHashTag().contains(searchedText)){
-                                            searched_list.add(item);
-                                        }
-                                        break;
-                                }*/
+                            if(item.finished.equals("True")){
+                                continue; // 입장시간이 이미 지난 공고라면 스킵
                             }
-                            count ++;
-                            if(count ==50){break;}
-                        }
+                            if(time_finished(item.getHelloTime())){ // 시간이 이미 지난 공고
+                                databaseReference.child(item.getRecruitment_key()).child("finished").setValue("True");
+                                continue;
+                            }
 
+                            int count = 0;
+                            for(int i = 0; i < vector.size(); i++) {
+                                String temp = vector.get(i);
+                                if (item.getTitle().contains(temp) || item.getPlace().get(2).contains(temp) || item.getHashTag().contains(temp)){
+                                    count++;
+                                }
+                            }
+                            if(count > 0){
+                                item.search_count = count;
+                                searched_list.add(item);
+                            }
+                        }
                         Collections.sort(searched_list);
-                        adapter = new BulletinListAdapter(view.getContext() ,searched_list);
-                        adapter.setItemClick(new BulletinListAdapter.ItemClick() {
+                        bulletin_adapter = new BulletinListAdapter(bulletin_view.getContext(), searched_list);
+                        bulletin_adapter.setItemClick(new BulletinListAdapter.ItemClick() {
                             @Override
                             public void onClick(View view, int posotion) {
                                 Intent intent = new Intent(getActivity(), RecruitmentBoardActivity.class);
-                                intent.putExtra("recruitment",searched_list.get(posotion));
-                                intent.putExtra("userInfo", userInfo);
+                                intent.putExtra("recruitment", searched_list.get(posotion));
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                 startActivity(intent);
                             }
                         });
 
-                        recyclerView = (RecyclerView)view.findViewById(R.id.bulletinboard_list);
-                        recyclerView.setHasFixedSize(false);
-                        layoutManager = new StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL);
-                        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+                        recycler_view = (RecyclerView)bulletin_view.findViewById(R.id.bulletinboard_list);
+                        recycler_view.setHasFixedSize(false);
+                        layout_manager = new StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL);
+                        layout_manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
 
-                        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                        recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
                             @Override
                             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                                 super.onScrollStateChanged(recyclerView, newState);
                                 ((StaggeredGridLayoutManager)recyclerView.getLayoutManager()).invalidateSpanAssignments();
                             }
                         });
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setAdapter(adapter);
+                        recycler_view.setLayoutManager(layout_manager);
+                        recycler_view.setAdapter(bulletin_adapter);
 
                         if(dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
@@ -291,6 +198,24 @@ public class BulletinBoardFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "알 수 없는 에러 발생, 문의하세요.", Toast.LENGTH_SHORT).show();
         }
     }
+    public boolean time_finished(String helloTime){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.YEAR) - 2000 + 56;
+        int month = calendar.get(Calendar.MONTH) + 1 + 56;
+        int day = calendar.get(Calendar.DAY_OF_MONTH) + 56;
+        int hour_now = calendar.get(Calendar.HOUR_OF_DAY) + 56;
+        int minute = calendar.get(Calendar.MINUTE) + 56;
+
+        String now = (char)hour + "" + (char)month + "" + (char)day + "" + (char)hour_now + "" + (char)minute;
+
+        for(int i = 0; i < 5; i++){
+            if(now.charAt(i) > helloTime.charAt(i)){
+                return true;
+            }
+            else if(now.charAt(i) < helloTime.charAt(i)){
+                return false;
+            }
+        }
+        return false;
+    }
 }
-
-

@@ -40,20 +40,20 @@ public class SplashActivity extends Activity {
         //FirebaseApp.initializeApp(this);
 
         //게시판DB 생성 및 연결
-        FirebaseOptions option3 = new FirebaseOptions.Builder()
+        /*FirebaseOptions option3 = new FirebaseOptions.Builder()
                 .setApplicationId("1:49528722600:android:3203f1eed40d8bdd") // Required for Analytics.
                 .setApiKey("AIzaSyC8yU4KzITsvLkrruwuOB_c1HVLZUs8Di0") // Required for Auth.
                 .setDatabaseUrl("https://frienting001.firebaseio.com/")// Required for RTDB.
                 .build();
-        FirebaseApp.initializeApp(this, option3, "recruitment");
+        FirebaseApp.initializeApp(this, option3, "recruitment");*/
 
         //로그DB 생성 및 연결
-        FirebaseOptions option4 = new FirebaseOptions.Builder()
+        /*FirebaseOptions option4 = new FirebaseOptions.Builder()
                 .setApplicationId("1:495557640632:android:3203f1eed40d8bdd") // Required for Analytics.
                 .setApiKey("AIzaSyDKQ3GoMVaBWc_t6Pze9ampWFcRgCd4JvM") // Required for Auth.
                 .setDatabaseUrl("https://frientinglog.firebaseio.com/")// Required for RTDB.
                 .build();
-        FirebaseApp.initializeApp(this, option4, "log");
+        FirebaseApp.initializeApp(this, option4, "log");*/
 
         // 이 화면은 앱 실행전에 잠깐 나오는 화면, 메세지를 받으면 꺼짐 따라서 5초뒤에 메세지를 보내야함
         handler = new Handler(){
@@ -65,6 +65,6 @@ public class SplashActivity extends Activity {
                 finish();
             }
         };
-        handler.sendEmptyMessageDelayed(0, 3000);
+        handler.sendEmptyMessageDelayed(0, 2000);
     }
 }

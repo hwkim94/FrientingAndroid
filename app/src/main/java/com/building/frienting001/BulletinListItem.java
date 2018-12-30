@@ -1,9 +1,5 @@
 package com.building.frienting001;
 
-/**
- * Created by LG_ on 2017-07-09.
- */
-
 //모집공고리스트를 담는 클래스
 public class BulletinListItem {
     private String image;

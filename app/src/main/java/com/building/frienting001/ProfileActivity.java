@@ -54,7 +54,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
 
+/*
         //상태창
         if (Build.VERSION.SDK_INT >=21) {
             Window window = getWindow();
@@ -156,7 +159,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
-
+*/
     }
 
     private void getReview(ReviewDialogItem item){

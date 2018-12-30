@@ -51,9 +51,10 @@ public class ChattingMemberActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chatting_member);
         //상태창
-        if (Build.VERSION.SDK_INT >=21) {
+        /*if (Build.VERSION.SDK_INT >=21) {
             Window window = getWindow();
             Drawable background = ResourcesCompat.getDrawable(getResources(),R.drawable.gradient,null);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -223,10 +224,11 @@ public class ChattingMemberActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        */
     }
 
     //다이얼로그
-    public void makingDialog(String title, String message, final int flag){
+    /*public void makingDialog(String title, String message, final int flag){
         AlertDialog.Builder builder = new AlertDialog.Builder(ChattingMemberActivity.this);
         builder.setTitle(title);
         builder.setMessage(message);
@@ -286,7 +288,7 @@ public class ChattingMemberActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
-    }
+    }*/
 
     //전처리
     private List<String> preprocessing(String s){

@@ -19,7 +19,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="20dp"
-        android:id="@+id/actionbar_name"
+        android:id="@+id/n_title"
         android:text=""/>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:gravity="center"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:id="@+id/actionbar_now_ting"
+            android:id="@+id/n_ting"
             android:text="00" />
     </LinearLayout>
 

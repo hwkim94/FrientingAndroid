@@ -83,7 +83,7 @@ public class ChattingMemberAdapter extends BaseAdapter{
         if (icon_uid.equals("")) {}
         else {Glide.with(convertView.getContext()).load(icon_uid).into(icon);}
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        /*btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (data.getUser().getFirebaseUserUid().equals(userInfo.getFirebaseUserUid())){
@@ -102,8 +102,8 @@ public class ChattingMemberAdapter extends BaseAdapter{
 
                     if(now-time >=0) {
                         Intent intent = new Intent(context, ReviewActivity.class);
-                        intent.putExtra("user", data.getUser());
-                        intent.putExtra("userInfo", userInfo);
+                        //intent.putExtra("user", data.getUser());
+                        //intent.putExtra("userInfo", userInfo);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         ActivityCompat.startActivity(context, intent, null);
@@ -112,7 +112,7 @@ public class ChattingMemberAdapter extends BaseAdapter{
                     }
                 }
             }
-        });
+        });*/
 
         return convertView;
     }

@@ -42,7 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class PaymentActivity extends AppCompatActivity {
 
-    private TextView history;
+    /*private TextView history;
     private TextView now_ting;
     private TextView free;
     private Button btn1, btn2, btn3, btn4, btn5, btn6;
@@ -172,11 +172,14 @@ public class PaymentActivity extends AppCompatActivity {
                 catch (Exception e){}
             }
         }
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_payment);
 
+/*
         //상태창
         if (Build.VERSION.SDK_INT >=21) {
             Window window = getWindow();
@@ -385,7 +388,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
     private void buyItem(String item) {
-        /*
+        // 이 부분은 원래 주석이었음
         try {
             Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(), item, "inapp", "ting");
             PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
@@ -397,7 +400,7 @@ public class PaymentActivity extends AppCompatActivity {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        */
+
 
         try {mHelper.launchPurchaseFlow(this, item, 1001, mPurchaseFinishedListener, "ting");}
         catch (Exception e){}
@@ -417,6 +420,7 @@ public class PaymentActivity extends AppCompatActivity {
             //처리할 결과물이 아닐 경우 이곳으로 빠져 기본처리를 하도록한다
             super.onActivityResult(requestCode, resultCode, data);
         }
+        */
     }
 
 }

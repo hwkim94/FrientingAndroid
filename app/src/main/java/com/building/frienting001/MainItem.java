@@ -1,14 +1,13 @@
 package com.building.frienting001;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-/**
- * Created by JM on 2017-10-07.
- */
 
 public class MainItem extends Fragment{
     @Override

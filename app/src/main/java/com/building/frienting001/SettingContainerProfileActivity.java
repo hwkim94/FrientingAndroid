@@ -77,7 +77,9 @@ public class SettingContainerProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setting_profile_container);
+/*
         //상태창
         if (Build.VERSION.SDK_INT >=21) {
             Window window = getWindow();
@@ -565,7 +567,7 @@ public class SettingContainerProfileActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
             }
-        });;
+        });;*/
 
     }
 }

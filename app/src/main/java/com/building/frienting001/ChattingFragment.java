@@ -5,13 +5,13 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,127 +19,135 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Calendar;
 
 //마이 화면
 public class ChattingFragment extends Fragment {
-
-    //private ListView chatting_list;
-    //private ChattingMemberAdapter chattinglistAdpater;
-
     private StaggeredGridLayoutManager layoutManager;
     private RecyclerView recyclerView;
     private View view;
     private ChattingListAdapter adapter;
-    private UserInfo userInfo;
 
     private DatabaseReference recruitmentDBReference;
+    private DatabaseReference userDBReference;
     private ProgressDialog dialog;
 
-    private List<String> ing_list;
-
-    private FirebaseAnalytics firebaseAnalytics;
+    final private ArrayList<RecruitmentItem> my_list = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view =inflater.inflate(R.layout.fragment_chatting, container, false);
+        view = inflater.inflate(R.layout.fragment_chatting, container, false);
+        my_list.clear(); // 중요 - 매번 클리어 해줘야 사이즈에서 오류가 안남
 
         //게시판 DB 연결
-        FirebaseApp recruitmentApp = FirebaseApp.getInstance("recruitment");
-        recruitmentDBReference = FirebaseDatabase.getInstance(recruitmentApp).getReference().child("recruitments");
-
-        firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
-
-        //유저정보 가져오기
-        Bundle bundle = getArguments();
-        userInfo = (UserInfo)bundle.getSerializable("userInfo");
-
-        //마이 화면 열었을때 로그
-        Bundle params1 = new Bundle();
-        params1.putString("UserUid", userInfo.getFirebaseUserUid());
-        params1.putLong("OpenTime", System.currentTimeMillis());
-        firebaseAnalytics.logEvent("ChattingFragment", params1);
+        FirebaseApp recruitmentApp = FirebaseApp.getInstance("user");
+        FirebaseAuth user_auth = FirebaseAuth.getInstance(recruitmentApp);
+        recruitmentDBReference = FirebaseDatabase.getInstance(recruitmentApp).getReference().child("recruitment");
+        userDBReference = FirebaseDatabase.getInstance(recruitmentApp).getReference("user").child(user_auth.getCurrentUser().getUid());
 
         searching();
-
         return view;
     }
 
     //공고 불러오기
     private void searching(){
-
         //채팅방리스트 만들기
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("불러오는 중...");
         dialog.show();
 
         //선언부
-        List<ChattingListItem> temp = new ArrayList<>();
-        final ReviewDialogItem item = new ReviewDialogItem("","","");
-        RecruitmentItem header1 = new RecruitmentItem("", "매칭 대기 공고","","","","","","","","","","",item,"","","",0,0,false);
-        RecruitmentItem header2 = new RecruitmentItem("", "매칭 완료 공고","","","","","","","","","","",item,"","","",0,0,false);
+        //final ReviewDialogItem item = new ReviewDialogItem("","","");
+        RecruitmentItem header = new RecruitmentItem();
+        header.setTitle("진행현황");
+        my_list.add(header);
 
-        //리스너 선언
-        ValueEventListener listener = new ValueEventListener() {
+        userDBReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    RecruitmentItem recruitmentItem = dataSnapshot.getValue(RecruitmentItem.class);
-                    adapter.addItem(new ChattingListItem(userInfo, recruitmentItem));
-
-                    if (adapter.getItemCount() == (ing_list.size() +2)){
-                        if(dialog != null && dialog.isShowing()) {
-                            dialog.dismiss();
-                        }
+                UserInfo user_data = dataSnapshot.getValue(UserInfo.class);
+                ArrayList<ArrayList<String>> included_recruit = user_data.recruit_progress;
+                final ArrayList<String> recruits_progress = new ArrayList<>();
+                final ArrayList<String> recruits_finished = new ArrayList<>();
+                for(int i = 0; i < included_recruit.size(); i++){
+                    if(time_finished(included_recruit.get(i).get(2))){ // 완전히 종료된 공고
+                        recruits_finished.add(included_recruit.get(i).get(0));
+                        //Log.d("myLog", "finished:" + included_recruit.get(i).get(0));
+                    } else {
+                        recruits_progress.add(included_recruit.get(i).get(0));
+                        //Log.d("myLog", "progress:" + included_recruit.get(i).get(0));
                     }
                 }
+                for(int i = 0; i < recruits_progress.size(); i++){
+                    recruitmentDBReference.child(recruits_progress.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            RecruitmentItem item = dataSnapshot.getValue(RecruitmentItem.class);
+                            my_list.add(item);
+                            //Log.d("myLog", "progress:" + item.getTitle());
+                            if(my_list.size() == recruits_progress.size() + 1){
+                                RecruitmentItem header2 = new RecruitmentItem();
+                                header2.setTitle("완료현황");
+                                my_list.add(header2);
+
+                                for(int j = 0; j < recruits_finished.size(); j++){
+                                    recruitmentDBReference.child(recruits_finished.get(j)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            RecruitmentItem item = dataSnapshot.getValue(RecruitmentItem.class);
+                                            my_list.add(item);
+                                            //Log.d("myLog", "finished:" + item.getTitle());
+                                            if(my_list.size() == recruits_finished.size() + recruits_progress.size() + 2){
+                                                adapter = new ChattingListAdapter(view.getContext(), my_list);
+                                                adapter.setItemClick(new ChattingListAdapter.ItemClick() {
+                                                    @Override
+                                                    public void onClick(View view, int posotion) {}
+                                                });
+
+                                                recyclerView = (RecyclerView)view.findViewById(R.id.chatting_list2);
+                                                recyclerView.setHasFixedSize(true);
+                                                layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                                                recyclerView.setLayoutManager(layoutManager);
+                                                recyclerView.setAdapter(adapter);
+
+                                                if(dialog != null && dialog.isShowing()) {
+                                                    dialog.dismiss();
+                                                }
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) { }
+                                    });
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) { }
+                    });
+                }
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        };
-
-        //어댑터 선언
-        adapter = new ChattingListAdapter(view.getContext(), temp);
-        adapter.setItemClick(new ChattingListAdapter.ItemClick() {
-            @Override
-            public void onClick(View view, int posotion) {}
+            public void onCancelled(DatabaseError databaseError) { }
         });
+    }
 
-        //헤더 만들어주기
-        adapter.addSectionHeaderItem(new ChattingListItem(userInfo,header1));
-        adapter.addSectionHeaderItem(new ChattingListItem(userInfo,header2));
+    public boolean time_finished(String helloTime) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.YEAR) - 2000 + 56;
+        int month = calendar.get(Calendar.MONTH) + 1 + 56;
+        int day = calendar.get(Calendar.DAY_OF_MONTH) + 56;
+        int hour_now = calendar.get(Calendar.HOUR_OF_DAY) + 56;
+        int minute = calendar.get(Calendar.MINUTE) + 56;
 
-        //진행중인 공고 가져오기
-        ing_list = preprocessing(userInfo.getRecruiting());
-        for (String recruitment : ing_list){
-            if(recruitment.length() >= 5) {
-                recruitment = recruitment.trim();
-                try{recruitmentDBReference.child(recruitment).addValueEventListener(listener);}
-                catch (Exception e){Toast.makeText(getActivity().getApplicationContext(), "알 수 없는 에러 발생, 문의하세요.", Toast.LENGTH_SHORT).show();}
+        String now = (char) hour + "" + (char) month + "" + (char) day + "" + (char) hour_now + "" + (char) minute;
+
+        for (int i = 0; i < 5; i++) {
+            if (now.charAt(i) > helloTime.charAt(i)) {
+                return true;
+            } else if (now.charAt(i) < helloTime.charAt(i)) {
+                return false;
             }
         }
-
-        //화면 만들기
-        recyclerView = (RecyclerView)view.findViewById(R.id.chatting_list2);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
+        return false;
     }
-
-    //공고 목록 전처리
-    private List<String> preprocessing(String s){
-        List<String> list = new ArrayList<>();
-
-        if(!s.equals("")){
-            String[] array = s.split("/");
-            list = Arrays.asList(array);
-        }
-        return list;
-    }
-
-
 }

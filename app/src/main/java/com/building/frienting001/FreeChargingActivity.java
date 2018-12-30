@@ -63,8 +63,8 @@ public class FreeChargingActivity extends AppCompatActivity implements RewardedV
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-        userInfo.setTing(userInfo.getTing() + rewardItem.getAmount());
-        userDBReference.child(userInfo.getFirebaseUserUid()).setValue(userInfo);
+    //    userInfo.setTing(userInfo.getTing() + rewardItem.getAmount());
+    //    userDBReference.child(userInfo.getFirebaseUserUid()).setValue(userInfo);
     }
 
     @Override
@@ -97,7 +97,9 @@ public class FreeChargingActivity extends AppCompatActivity implements RewardedV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_free_charging);
+        /*
         //상태창
         if (Build.VERSION.SDK_INT >=21) {
             Window window = getWindow();
@@ -180,6 +182,7 @@ public class FreeChargingActivity extends AppCompatActivity implements RewardedV
         params1.putString("UserUid", userInfo.getFirebaseUserUid());
         params1.putLong("OpenTime", System.currentTimeMillis());
         firebaseAnalytics.logEvent("FreeChargingActivity", params1);
+        */
     }
 
 

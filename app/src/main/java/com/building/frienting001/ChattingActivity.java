@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,47 +54,32 @@ public class ChattingActivity extends AppCompatActivity {
     private Button chatting_warning_ok;
     private LinearLayout chatting_warning;
 
-    private UserInfo userInfo;
     private RecruitmentItem recruitmentItem;
-
-    private List<ChattingMemberItem> chattingMember_lst;
-    private List<String> chattingMember_uid_lst;
 
     private ChattingMessageAdapter chattingMessageAdapter;
     private InputMethodManager imm;
 
-    private FirebaseAnalytics firebaseAnalytics;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         //상태창
-        if (Build.VERSION.SDK_INT >=21) {
-            Window window = getWindow();
-            Drawable background = ResourcesCompat.getDrawable(getResources(),R.drawable.gradient,null);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setBackgroundDrawable(background);
-            window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.color_transparent));
-        }
+        Frequent frequent = new Frequent();
+        frequent.hideStatusBar(this);
 
         //정보 받아오기
         Intent receive = getIntent();
         recruitmentItem = (RecruitmentItem)receive.getSerializableExtra("recruitment");
-        userInfo = (UserInfo)receive.getSerializableExtra("userInfo");
 
         //액션바 설정
         LayoutInflater actionbarInflater =LayoutInflater.from(this);
         View customView = actionbarInflater.inflate(R.layout.actionbar, null);
-        TextView actionbar_name = (TextView)customView.findViewById(R.id.actionbar_name);
-        TextView actionbar_now = (TextView)customView.findViewById(R.id.actionbar_now_ting);
+        TextView actionbar_name = (TextView)customView.findViewById(R.id.n_title);
+        final TextView actionbar_now = (TextView)customView.findViewById(R.id.n_ting);
         ImageView actionbar_back = (ImageView) customView.findViewById(R.id.actionbar_back);
         LinearLayout actionbar_container = (LinearLayout)customView.findViewById(R.id.actionbar_ting_container);
         actionbar_container.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { // 팅 충전 페이지 이동
                 Intent intent = new Intent(ChattingActivity.this, PaymentActivity.class);
-                intent.putExtra("userInfo", userInfo);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
@@ -104,9 +91,6 @@ public class ChattingActivity extends AppCompatActivity {
                 finish();
             }
         });
-        actionbar_now.setText(""+userInfo.getTing());
-        actionbar_name.setText(recruitmentItem.getTitle());
-
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(customView, params);
@@ -116,11 +100,31 @@ public class ChattingActivity extends AppCompatActivity {
         Toolbar parent = (Toolbar)customView.getParent();
         parent.setContentInsetsAbsolute(0,0);
 
+        //액션바
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setElevation(3);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setElevation(3);
+        //DB 연결
+        FirebaseApp chattingApp = FirebaseApp.getInstance("user");
+        userDBReference = FirebaseDatabase.getInstance(chattingApp).getReference().child("user");
+        recruitmentDBReference = FirebaseDatabase.getInstance(chattingApp).getReference().child("recruitment");
+        chattingDatabaseReference = FirebaseDatabase.getInstance(chattingApp).getReference().child("chatting").child(recruitmentItem.getRecruitment_key());
+        final FirebaseAuth user_auth = FirebaseAuth.getInstance(chattingApp);
+
+        actionbar_name.setText("채팅");
+        userDBReference.child(user_auth.getCurrentUser().getUid()).child("Ting").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Integer ting_temp = dataSnapshot.getValue(Integer.class);
+                String ting_text = Integer.toString(ting_temp);
+                actionbar_now.setText(ting_text);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        }); // 팅은 실시간으로 계속 확인해야 하기에 value event 리스너를 달아주고 지속적으로 체크
 
         //선언부
         chatting_message = (ListView)findViewById(R.id.chatting_message);
@@ -129,27 +133,14 @@ public class ChattingActivity extends AppCompatActivity {
         chatting_edit = (EditText)findViewById(R.id.chatting_edit);
         chatting_warning = (LinearLayout)findViewById(R.id.chatting_warning);
         chatting_warning_ok = (Button)findViewById(R.id.chatting_warning_ok);
-        final String chatting_name = userInfo.getName();
 
         List<ChattingMessageItem> chattingMessageItems = new ArrayList<>();
-        chattingMessageAdapter = new ChattingMessageAdapter(this, R.layout.chatting_message_item, chattingMessageItems, userInfo.getFirebaseUserUid());
+        chattingMessageAdapter = new ChattingMessageAdapter(this, R.layout.chatting_message_item, chattingMessageItems, user_auth.getCurrentUser().getUid());
         chatting_message.setAdapter(chattingMessageAdapter);
         chatting_edit.setText("");
         chatting_send.setEnabled(false);
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-
-        //DB 연결
-        FirebaseApp chattingApp = FirebaseApp.getInstance("chatting"); // Retrieve secondary app.
-        chattingDatabase = FirebaseDatabase.getInstance(chattingApp); // Get the database for the other app.
-        chattingDatabaseReference = chattingDatabase.getReference().child("message").child(recruitmentItem.getRecruitment_key());
-
-        FirebaseApp AuthApp_user = FirebaseApp.getInstance("user"); // Retrieve secondary app.
-        userDBReference = FirebaseDatabase.getInstance(AuthApp_user).getReference().child("user");
-
-        FirebaseApp recruitmentApp = FirebaseApp.getInstance("recruitment");
-        recruitmentDBReference = FirebaseDatabase.getInstance(recruitmentApp).getReference().child("recruitments");
 
         //채팅 경고 화면
         chatting_warning_ok.setOnClickListener(new View.OnClickListener() {
@@ -161,55 +152,20 @@ public class ChattingActivity extends AppCompatActivity {
             }
         });
 
-        //채팅방 열었을때 로그
-        Bundle params1 = new Bundle();
-        params1.putString("UserUid", userInfo.getFirebaseUserUid());
-        params1.putString("RecruitmentUid", recruitmentItem.getRecruitment_key());
-        params1.putLong("OpenTime", System.currentTimeMillis());
-        firebaseAnalytics.logEvent("ChattingActivity", params1);
-
-        //채팅방 멤버
-        chattingMember_lst= new ArrayList<>();
-        chattingMember_uid_lst = new ArrayList<>();
-        String applicants = recruitmentItem.getApplicant_uid();
-        List<String> applicant_lst= preprocessing(applicants);
-        for(String str : applicant_lst){userDBReference.child(str).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    UserInfo applicant = (UserInfo)dataSnapshot.getValue(UserInfo.class);
-                    chattingMember_lst.add(new ChattingMemberItem(applicant.getImagePath(), applicant.getNickname(), applicant.getIntroduction(), applicant));
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });}
-        chattingMember_lst.add(new ChattingMemberItem(userInfo.getImagePath(), userInfo.getNickname(), userInfo.getIntroduction(), userInfo));
-        chattingMember_uid_lst.addAll(applicant_lst);
-        chattingMember_uid_lst.add(userInfo.getFirebaseUserUid());
-
-        //채팅설정
         chatting_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChattingActivity.this, ChattingMemberActivity.class);
-                intent.putExtra("userInfo", userInfo);
-                intent.putExtra("recruitment", recruitmentItem);
+                intent.putExtra("recruitment", recruitmentItem.getRecruitment_key()); // 키값만 전달
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-
             }
         });
 
-
-        // Enable Send button when there's text to send
         chatting_edit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().length() > 0) {
@@ -218,27 +174,24 @@ public class ChattingActivity extends AppCompatActivity {
                     chatting_send.setEnabled(false);
                 }
             }
-
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) {}
         });
 
         //메세지 보내기
         chatting_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Send messages on click
-                ChattingMessageItem chattingMessageItem = new ChattingMessageItem("", userInfo.getImagePath(), chatting_name, chatting_edit.getText().toString(), userInfo.getFirebaseUserUid());
+                Log.d("myLog", "here1");
+                ChattingMessageItem chattingMessageItem = new ChattingMessageItem();
+                chattingMessageItem.setChatting_photo("");
+                chattingMessageItem.setChatting_name("테스트용");
+                chattingMessageItem.setChatting_text(chatting_edit.getText().toString());
+                chattingMessageItem.setWriter_uid(user_auth.getCurrentUser().getUid());
+                Log.d("myLog", "here");
                 chattingDatabaseReference.push().setValue(chattingMessageItem);
+                Log.d("myLog", "here2");
                 chatting_edit.setText("");
-
-                Bundle params = new Bundle();
-                params.putString("UserUid", userInfo.getFirebaseUserUid());
-                params.putString("RecruitmentUid", recruitmentItem.getRecruitment_key());
-                params.putLong("SendTime", System.currentTimeMillis());
-                firebaseAnalytics.logEvent("ChattingActivity", params);
-
             }
         });
 
@@ -251,41 +204,21 @@ public class ChattingActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         };
         chattingDatabaseReference.addChildEventListener(mChildEventListener);
-    }
-
-    private List<String> preprocessing(String s){
-        List<String> list = new ArrayList<>();
-
-        if(s != ""){
-            String[] array = s.split("/");
-            list = Arrays.asList(array);
-        }
-        return list;
     }
 
     public void hide_keyboard3(View v){
         imm.hideSoftInputFromWindow(chatting_edit.getWindowToken(), 0);
     }
-
-
 }

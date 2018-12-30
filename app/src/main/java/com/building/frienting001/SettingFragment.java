@@ -32,7 +32,7 @@ public class SettingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
-
+/*
         //선언부
         setting_profile = (TextView) view.findViewById(R.id.setting_profile);
         setting_email = (LinearLayout)view.findViewById(R.id.setting_email);
@@ -178,7 +178,7 @@ public class SettingFragment extends Fragment {
                 getActivity().finish();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
-        });
+        });*/
 
         return view;
     }

@@ -12,10 +12,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-/**
- * Created by LG_ on 2017-07-08.
- */
-
 //채팅창에 채팅을 붙여주는 어댑터
 public class ChattingMessageAdapter extends ArrayAdapter<ChattingMessageItem>{
 
@@ -50,15 +46,14 @@ public class ChattingMessageAdapter extends ArrayAdapter<ChattingMessageItem>{
             message_profile.setVisibility(View.GONE);
             message_name.setVisibility(View.GONE);
 
-            if (data.getChatting_photo().equals("")) {
+            /*if (data.getChatting_photo().equals("")) {
             } else {
                 //사진 전송
                 message_photo.setVisibility(View.VISIBLE);
                 Glide.with(convertView.getContext()).load(data.getChatting_photo()).into(message_photo);
                 message_text.setVisibility(View.GONE);
                 message_my_text.setVisibility(View.GONE);
-            }
-
+            }*/
 
             message_my_text.setVisibility(View.VISIBLE);
             message_text.setVisibility(View.GONE);
@@ -71,14 +66,14 @@ public class ChattingMessageAdapter extends ArrayAdapter<ChattingMessageItem>{
             if (data.getChatting_photo().equals("")) {
             } else {
                 //사진 전송
-                message_photo.setVisibility(View.VISIBLE);
+                //message_photo.setVisibility(View.VISIBLE);
                 Glide.with(convertView.getContext()).load(data.getChatting_photo()).into(message_photo);
-                message_text.setVisibility(View.GONE);
-                message_my_text.setVisibility(View.GONE);
+                //message_text.setVisibility(View.GONE);
+                //message_my_text.setVisibility(View.GONE);
             }
 
-            if (data.getChatting_profile().equals("")) {
-            } else {Glide.with(convertView.getContext()).load(data.getChatting_profile()).into(message_profile);}
+            //if (data.getChatting_profile().equals("")) {
+            //} else {Glide.with(convertView.getContext()).load(data.getChatting_profile()).into(message_profile);}
 
             message_text.setVisibility(View.VISIBLE);
             message_name.setText(data.getChatting_name());
@@ -88,28 +83,4 @@ public class ChattingMessageAdapter extends ArrayAdapter<ChattingMessageItem>{
         }
         return convertView;
     }
-
-    /*
-    private List<ChattingMessageItem> list = new ArrayList<>();
-
-    public void add(ChattingMessageItem item) {
-        list.add(item);
-    }
-
-    @Override
-    public int getCount() {
-        return list.size();
-    }
-
-    @Override
-    public ChattingMessageItem getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-    */
-
 }

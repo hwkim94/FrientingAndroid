@@ -1,27 +1,22 @@
 package com.building.frienting001;
 
-/**
- * Created by LG_ on 2017-08-14.
- */
-
 //채팅창에 보이는 메세지의 내용을 담아주는 클래스
 public class ChattingMessageItem {
     private String chatting_photo;
-    private String chatting_profile;
+    //private String chatting_profile;
     private String chatting_name;
     private String chatting_text;
     private String writer_uid;
 
-    public ChattingMessageItem() {
-    }
+    public ChattingMessageItem() { }
 
-    public ChattingMessageItem(String chatting_photo, String chatting_profile, String chatting_name, String chatting_text, String writer_uid) {
+    /*public ChattingMessageItem(String chatting_photo, String chatting_profile, String chatting_name, String chatting_text, String writer_uid) {
         this.chatting_photo = chatting_photo;
         this.chatting_profile = chatting_profile;
         this.chatting_name = chatting_name;
         this.chatting_text = chatting_text;
         this.writer_uid = writer_uid;
-    }
+    }*/
 
     public String getWriter_uid() {
         return writer_uid;
@@ -39,13 +34,13 @@ public class ChattingMessageItem {
         this.chatting_photo = chatting_photo;
     }
 
-    public String getChatting_profile() {
+    /*public String getChatting_profile() {
         return chatting_profile;
     }
 
     public void setChatting_profile(String chatting_profile) {
         this.chatting_profile = chatting_profile;
-    }
+    }*/
 
     public String getChatting_name() {
         return chatting_name;

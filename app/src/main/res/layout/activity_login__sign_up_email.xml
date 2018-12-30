@@ -19,7 +19,7 @@
         android:textSize="15dp"
         android:textColor="#87dff7"
         android:background="@color/color_transparent"
-        android:id="@+id/signup_email_back_btn"/>
+        android:id="@+id/sue_cancel_button"/>
     <TextView
         android:layout_marginTop="47dp"
         android:paddingTop="20dp"
@@ -59,7 +59,7 @@
             android:imeOptions="actionNext"
             android:hint="인증메일을 받을 수 있는 이메일"
             android:textSize="15dp"
-            android:id="@+id/signup_email"/>
+            android:id="@+id/sue_email_input"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
             android:lines = "1"
             android:textSize="15dp"
             android:hint="6자리~20자리(숫자나 특수문자 중 1개 포함)"
-            android:id="@+id/signup_pw"/>
+            android:id="@+id/sue_password_input"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
             android:layout_height="40dp"
             android:imeOptions="actionDone"
             android:textSize="15dp"
-            android:id="@+id/signup_pw2"/>
+            android:id="@+id/sue_password_check_input"/>
 
 
         <Button
@@ -116,7 +116,7 @@
             android:textSize="20dp"
             android:textColor="#87dff7"
             android:background="@color/color_transparent"
-            android:id="@+id/signup_email_next_btn"/>
+            android:id="@+id/sue_complete_button"/>
     </LinearLayout>
 
 </RelativeLayout>

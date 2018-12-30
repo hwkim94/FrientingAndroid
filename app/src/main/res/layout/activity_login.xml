@@ -25,7 +25,7 @@
             android:textSize="18dp"
             android:textColor="#87dff7"
             android:text="Email address"
-            android:id="@+id/eMail"
+            android:id="@+id/email"
             />
         <EditText
             android:layout_marginTop="4dp"
@@ -35,7 +35,7 @@
             android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:id="@+id/eMailInput"
+            android:id="@+id/email_input"
             android:maxLines="1"
             android:lines = "1"
             android:imeOptions="actionNext"/>
@@ -49,7 +49,7 @@
             android:textSize="18dp"
             android:text="Password"
             android:textColor="#87dff7"
-            android:id="@+id/passWord"
+            android:id="@+id/password"
             />
         <EditText
             android:layout_marginTop="4dp"
@@ -61,7 +61,7 @@
             android:inputType="text"
             android:lines = "1"
             android:layout_height="40dp"
-            android:id="@+id/passWordInput"/>
+            android:id="@+id/password_input"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
             android:textStyle="bold"
             android:textColor="#87dff7"
             android:background="@color/color_transparent"
-            android:id="@+id/login_btn"/>
+            android:id="@+id/login_button"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
@@ -83,7 +83,7 @@
         android:gravity="right"
         android:textStyle="bold"
         android:textColor="#87dff7"
-        android:id="@+id/making_email"
+        android:id="@+id/sing_up"
         android:text="회원가입" />
 
 </RelativeLayout>

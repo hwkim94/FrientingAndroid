@@ -50,6 +50,9 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_review);
+/*
         //상태창
         if (Build.VERSION.SDK_INT >=21) {
             Window window = getWindow();
@@ -323,7 +326,7 @@ public class ReviewActivity extends AppCompatActivity {
                 //startActivity(intent);
                 finish();
             }
-        });
+        });*/
     }
 
 }
