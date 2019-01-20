@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 public class Frequent {
     public void hideStatusBar(Activity activity){
         if (Build.VERSION.SDK_INT >= 21) {
@@ -46,5 +48,25 @@ public class Frequent {
             }
         });
         builder.create().show();
+    }
+
+    public boolean time_finished(String helloTime) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.YEAR) - 2000 + 56;
+        int month = calendar.get(Calendar.MONTH) + 1 + 56;
+        int day = calendar.get(Calendar.DAY_OF_MONTH) + 56;
+        int hour_now = calendar.get(Calendar.HOUR_OF_DAY) + 56;
+        int minute = calendar.get(Calendar.MINUTE) + 56;
+
+        String now = (char) hour + "" + (char) month + "" + (char) day + "" + (char) hour_now + "" + (char) minute;
+
+        for (int i = 0; i < 5; i++) {
+            if (now.charAt(i) > helloTime.charAt(i)) {
+                return true;
+            } else if (now.charAt(i) < helloTime.charAt(i)) {
+                return false;
+            }
+        }
+        return false;
     }
 }

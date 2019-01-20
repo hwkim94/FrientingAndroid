@@ -121,7 +121,7 @@ public class BulletinBoardFragment extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        final ArrayList<RecruitmentItem> searched_list = new ArrayList<>(); // 후에 json으로 수정하면 좋을듯
+                        final ArrayList<RecruitmentItem> searched_list = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             RecruitmentItem item = snapshot.getValue(RecruitmentItem.class);
 

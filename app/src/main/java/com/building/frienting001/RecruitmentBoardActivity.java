@@ -277,6 +277,10 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
                                 else {
                                     dialogInterface.cancel();
 
+                                    /*if (current > detail1 | recruitmentItem.getIs_finished()== true) { // 이 팅 소비 도중 공고가 마감되었을 경우.
+                                        Toast.makeText(getApplicationContext(), "모집이 마감되었습니다.", Toast.LENGTH_SHORT).show();
+                                    }*/
+
                                     recruitmentItem.getApplicant_uid().add(user_auth.getCurrentUser().getUid());
                                     recruitmentDBReference.child(recruitmentItem.getRecruitment_key()).child("applicant_uid").setValue(recruitmentItem.getApplicant_uid());
 

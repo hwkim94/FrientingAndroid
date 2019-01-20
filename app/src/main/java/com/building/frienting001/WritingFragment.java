@@ -223,7 +223,7 @@ public class WritingFragment extends Fragment {
                 }
                 else {*/
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("매칭 신청을 완료하시겠습니까?");
+                        builder.setTitle("공고 작성을 완료하시겠습니까?");
                         builder.setMessage("확인 버튼을 누르실 경우 20팅이 소모됩니다.");
                         builder.setCancelable(false);
 

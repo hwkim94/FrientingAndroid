@@ -22,7 +22,7 @@ public class RecruitmentItem implements Serializable, Comparable{
     private String writer_uid = "";
     private ArrayList<String> applicant_uid = new ArrayList<>();
     public int search_count = 0;
-    public String finished = "false";
+    public String finished = "False";
 
     private int detail1, detail2;
 

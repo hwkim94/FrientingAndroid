@@ -49,6 +49,19 @@
                 android:gravity="center_vertical"
                 android:textColor="#ffffff"
                 android:id="@+id/chatting_item_title"/>
+
+            <TextView
+                android:id="@+id/status_test"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:text="Default"
+                android:textColor="#ffffff"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -108,11 +121,20 @@
             android:text="공고보기"/>
 
         <Button
+            android:id="@+id/chatting_item_btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:background="@drawable/border_blue_4side"
+            android:text="마감하기"/>
+
+        <Button
             android:id="@+id/chatting_item_btn3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/border_blue_4side"
-            android:text="채팅"/>
+            android:text="채팅하기"/>
     </LinearLayout>
 </LinearLayout>
