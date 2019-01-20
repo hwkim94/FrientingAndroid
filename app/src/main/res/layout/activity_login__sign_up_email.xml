@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,114 +9,177 @@
     android:layout_height="match_parent"
     tools:context="com.building.frienting001.Login_SignUp_EmailActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:layout_gravity="right"
-        android:gravity="center_vertical"
-        android:text="Cancel"
-        android:textSize="15dp"
-        android:textColor="#87dff7"
-        android:background="@color/color_transparent"
-        android:id="@+id/sue_cancel_button"/>
-    <TextView
-        android:layout_marginTop="47dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="13dp"
-        android:background="#F7F7F7"
-        android:gravity="center"
-        android:text="프렌팅은 고객들의 안전을 위해 2단계 인증방식을 사용합니다.\n고객님의 계정은 절대로 공개되지 않으며,\n본인인증과 비밀번호 찾기 용도로만 사용됩니다. "/>
-
-
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textSize="18dp"
-            android:textColor="#87dff7"
-            android:text="Email address" />
-        <EditText
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:inputType="text"
-            android:layout_marginBottom="8dp"
-            android:layout_width="match_parent"
-            android:maxLines="1"
-            android:lines = "1"
-            android:layout_height="40dp"
-            android:imeOptions="actionNext"
-            android:hint="인증메일을 받을 수 있는 이메일"
-            android:textSize="15dp"
-            android:id="@+id/sue_email_input"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textSize="18dp"
-            android:text="Password"
-            android:textColor="#87dff7"/>
-        <EditText
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:imeOptions="actionNext"
-            android:maxLines="1"
-            android:lines = "1"
-            android:textSize="15dp"
-            android:hint="6자리~20자리(숫자나 특수문자 중 1개 포함)"
-            android:id="@+id/sue_password_input"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textSize="18dp"
-            android:text="Password Check"
-            android:textColor="#87dff7" />
-
-        <EditText
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="16dp"
-            android:inputType="text"
-            android:layout_marginRight="16dp"
-            android:layout_width="match_parent"
-            android:maxLines="1"
-            android:lines = "1"
-            android:layout_height="40dp"
-            android:imeOptions="actionDone"
-            android:textSize="15dp"
-            android:id="@+id/sue_password_check_input"/>
-
-
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:background="@drawable/login_phone_actionbar_border">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_gravity="right"
-            android:text="Next"
-            android:textSize="20dp"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:text="Back"
+            android:textSize="15dp"
             android:textColor="#87dff7"
             android:background="@color/color_transparent"
-            android:id="@+id/sue_complete_button"/>
+            android:id="@+id/sue_cancel_button"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="휴대폰 인증"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:background="@color/color_transparent"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:gravity="right"
+            android:text="Back"
+            android:textSize="15dp"
+            android:textColor="@color/color_transparent"
+            android:background="@color/color_transparent"
+            android:layout_weight="1"/>
     </LinearLayout>
 
-</RelativeLayout>
+    <TextView
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp"
+        android:textSize="11.5dp"
+        android:text="이메일 주소"
+        android:textColor="#9b9b9b" />
+    <EditText
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:maxLines="1"
+        android:lines = "1"
+        android:textSize="10dp"
+        android:imeOptions="actionDone"
+        android:layout_height="40dp"
+        android:hint=""
+        android:id="@+id/login_email"/>
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp"
+        android:textSize="11.5dp"
+        android:text="비밀번호"
+        android:textColor="#9b9b9b" />
+    <EditText
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:maxLines="1"
+        android:lines = "1"
+        android:textSize="10dp"
+        android:imeOptions="actionDone"
+        android:layout_height="40dp"
+        android:hint=""
+        android:id="@+id/login_password"/>
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp"
+        android:textSize="11.5dp"
+        android:text="비밀번호 확인"
+        android:textColor="#9b9b9b" />
+    <EditText
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:maxLines="1"
+        android:lines = "1"
+        android:textSize="10dp"
+        android:imeOptions="actionDone"
+        android:layout_height="40dp"
+        android:hint=""
+        android:id="@+id/login_password2"/>
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp"
+        android:textSize="11.5dp"
+        android:text="성별"
+        android:textColor="#9b9b9b" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:weightSum="2">
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#9b9b9b"
+            android:background="@drawable/login_email_sex_selecter"
+            android:button="@color/color_transparent"
+            android:text="남자" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#9b9b9b"
+            android:background="@drawable/login_email_sex_selecter"
+            android:button="@color/color_transparent"
+            android:text="여자" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="98.3dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp"
+        android:gravity="center"
+        android:textSize="11.5dp"
+        android:text="회원가입과 동시에 이용약관과\n개인정보 이용방침에 동의하시게 됩니다."
+        android:textColor="#9b9b9b" />
+
+    <Button
+        android:layout_width="132dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="40.5dp"
+        android:layout_marginBottom="13dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="11.5dp"
+        android:text="가입하기"
+        android:background="@drawable/login_button"
+        android:textColor="#9b9b9b"
+        android:id="@+id/sign_up_finish_button"/>
+
+</LinearLayout>

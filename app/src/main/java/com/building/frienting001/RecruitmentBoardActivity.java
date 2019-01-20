@@ -9,14 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.RecursiveAction;
 
 //모집공고 화면
 public class RecruitmentBoardActivity extends AppCompatActivity {
@@ -53,8 +48,8 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
     private LinearLayout review;
     private ImageView photo;
     private RecyclerView hashtag;
-    private TextView helloDate;
-    private TextView helloTime;
+    private TextView meetingDate;
+    private TextView meetingTime;
     private TextView activity;
     private TextView place;
     private TextView text;
@@ -119,8 +114,8 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
         review = (LinearLayout) findViewById(R.id.recruitment_board_review);
         photo = (ImageView)findViewById(R.id.recruitment_board_photo);
         hashtag = (RecyclerView)findViewById(R.id.recruitment_board_hashtag);
-        helloDate = (TextView)findViewById(R.id.recruitment_board_helloDate);
-        helloTime = (TextView)findViewById(R.id.recruitment_board_helloTime);
+        meetingDate = (TextView)findViewById(R.id.recruitment_board_meetingDate);
+        meetingTime = (TextView)findViewById(R.id.recruitment_board_meetingTime);
         activity = (TextView)findViewById(R.id.recruitment_board_activity);
         text = (TextView)findViewById(R.id.recruitment_board_text);
         btn = (Button)findViewById(R.id.recruitment_board_btn);
@@ -143,7 +138,7 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
         });
 
         actionbar_name.setText("개별 공고");
-        userDBReference.child(user_auth.getCurrentUser().getUid()).child("Ting").addValueEventListener(new ValueEventListener() {
+        userDBReference.child(user_auth.getCurrentUser().getUid()).child("ting").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer ting_temp = dataSnapshot.getValue(Integer.class);
@@ -201,13 +196,13 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
             }
         });
 
-        helloDate.setText(recruitmentItem.getDateSearched());
-        helloTime.setText(recruitmentItem.getTimeSearched());
-        activity.setText(recruitmentItem.getActivity().get(1));
+        meetingDate.setText(recruitmentItem.getDateSearched());
+        meetingTime.setText(recruitmentItem.getTimeSearched());
+        activity.setText(recruitmentItem.getActivity());
         text.setText(recruitmentItem.getText());
         place.setText(recruitmentItem.getPlaceName());
 
-        detail.setText("인원제한 : " + recruitmentItem.getDetail1() + "    " + "나이상한 : " + recruitmentItem.getDetail2());
+        detail.setText("인원제한 : " + recruitmentItem.getDetail1());
 
         //user_age =  Calendar.getInstance().get(Calendar.YEAR) - Integer.parseInt((String)userInfo.getBirth().subSequence(0,4)) +1;
         user_age = 10;
@@ -220,16 +215,15 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "내가 작성한 글입니다.", Toast.LENGTH_SHORT).show();
                 } else if(recruitmentItem.getApplicant_uid().contains(user_auth.getCurrentUser().getUid())){
                     Toast.makeText(getApplicationContext(), "이미 신청한 공고입니다.", Toast.LENGTH_SHORT).show();
-                } else if (user_age > recruitmentItem.getDetail2()) {
-                    Toast.makeText(getApplicationContext(), "나이 상한을 넘으셨습니다.", Toast.LENGTH_SHORT).show();
                 }
+
                 /*else if (current > detail1 | recruitmentItem.getIs_finished()== true) {
                     Toast.makeText(getApplicationContext(), "모집이 마감되었습니다.", Toast.LENGTH_SHORT).show();
                 }*/
                 else {
                     for(int i = 0; i < userInfo.recruit_progress.size(); i++) {
-                        if (strComp(recruitmentItem.getHelloTime(), userInfo.recruit_progress.get(i).get(2)) == 1 ||
-                                strComp(recruitmentItem.getGoodbyeTime(), userInfo.recruit_progress.get(i).get(1)) == -1) { // 겹치는 약속 없음
+                        if (strComp(recruitmentItem.getMeetingTime(), userInfo.recruit_progress.get(i).get(2)) == 1 ||
+                                strComp(recruitmentItem.getFarewellTime(), userInfo.recruit_progress.get(i).get(1)) == -1) { // 겹치는 약속 없음
                         } else {
                             //겹치는 약속을 보여주기 -> i번째 recruit_process 그냥 보여주면 됨.
                             //정보들을 DB와 Storage에 저장
@@ -248,7 +242,7 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
                         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                if (userInfo.Ting < 10) {
+                                if (userInfo.ting < 10) {
                                     dialogInterface.cancel();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RecruitmentBoardActivity.this);
                                     builder.setTitle("팅이 부족합니다.");
@@ -277,15 +271,19 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
                                 else {
                                     dialogInterface.cancel();
 
+                                    /*if (current > detail1 | recruitmentItem.getIs_finished()== true) { // 이 팅 소비 도중 공고가 마감되었을 경우.
+                                        Toast.makeText(getApplicationContext(), "모집이 마감되었습니다.", Toast.LENGTH_SHORT).show();
+                                    }*/
+
                                     recruitmentItem.getApplicant_uid().add(user_auth.getCurrentUser().getUid());
                                     recruitmentDBReference.child(recruitmentItem.getRecruitment_key()).child("applicant_uid").setValue(recruitmentItem.getApplicant_uid());
 
                                     ArrayList<String> temp = new ArrayList<>();
                                     temp.add(recruitmentItem.getRecruitment_key());
-                                    temp.add(recruitmentItem.getHelloTime());
-                                    temp.add(recruitmentItem.getGoodbyeTime());
+                                    temp.add(recruitmentItem.getMeetingTime());
+                                    temp.add(recruitmentItem.getFarewellTime());
                                     userInfo.recruit_progress.add(temp);
-                                    userInfo.Ting = userInfo.Ting - 10;
+                                    userInfo.ting = userInfo.ting - 10;
                                     userDBReference.child(user_auth.getCurrentUser().getUid()).setValue(userInfo);
 
                                     /*if ((current - 1) == detail1) {
@@ -366,7 +364,7 @@ public class RecruitmentBoardActivity extends AppCompatActivity {
         alertDialog.show();
     }*/
 }
-//구글 addmob //원래 주석부분
+//구글 addmob
         /*MobileAds.initialize(this, "ca-app-pub-7101905843238574~8811716481");
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();

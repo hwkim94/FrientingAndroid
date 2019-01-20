@@ -32,6 +32,7 @@ public class SettingFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
+        setting_logout = (TextView)view.findViewById(R.id.setting_logout);
 /*
         //선언부
         setting_profile = (TextView) view.findViewById(R.id.setting_profile);
@@ -42,7 +43,7 @@ public class SettingFragment extends Fragment {
         setting_guide = (LinearLayout)view.findViewById(R.id.setting_guide);
         setting_evaluate = (LinearLayout)view.findViewById(R.id.setting_evaluate);
         setting_client = (LinearLayout)view.findViewById(R.id.setting_client);
-        setting_logout = (TextView)view.findViewById(R.id.setting_logout);
+
         ImageView photo = (ImageView)view.findViewById(R.id.setting_photo);
         TextView name = (TextView)view.findViewById(R.id.setting_profile_name);
         TextView email = (TextView)view.findViewById(R.id.setting_profile_email);
@@ -151,7 +152,7 @@ public class SettingFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
-        });
+        });*/
 
         setting_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,26 +160,14 @@ public class SettingFragment extends Fragment {
                 FirebaseApp userApp = FirebaseApp.getInstance("user"); // Retrieve secondary app.
                 FirebaseAuth userAuth1 = FirebaseAuth.getInstance(userApp);
 
-                FirebaseApp chatApp = FirebaseApp.getInstance("chatting");
-                FirebaseAuth userAuth2 = FirebaseAuth.getInstance(chatApp);
-
-                FirebaseApp logApp = FirebaseApp.getInstance("log");
-                FirebaseAuth userAuth3 = FirebaseAuth.getInstance(logApp);
-
-                FirebaseApp recruitmentApp = FirebaseApp.getInstance("recruitment");
-                FirebaseAuth userAuth4 = FirebaseAuth.getInstance(recruitmentApp);
-
                 userAuth1.signOut();
-                userAuth2.signOut();
-                userAuth3.signOut();
-                userAuth4.signOut();
 
                 Toast.makeText(getActivity().getApplicationContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
 
                 getActivity().finish();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
-        });*/
+        });
 
         return view;
     }

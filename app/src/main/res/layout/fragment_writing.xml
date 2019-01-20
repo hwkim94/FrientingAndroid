@@ -38,7 +38,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:id="@+id/title"
-            android:hint="활동에 대한 설명을 적어주세요! (5~30자)"
+            android:hint="활동에 대한 설명을 적어주세요! (20자 이하)"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,218 +92,32 @@
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="vertical"
+            android:background="@drawable/border_black">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/border_black">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="활동 카테고리"
-                    android:textStyle="bold"
-                    android:textSize="13dp"
-                    android:textColor="#87dff7"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="4dp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="4dp"
-                        android:gravity="center_vertical"
-                        android:layout_marginRight="4dp"
-                        android:textSize="11dp"
-                        android:id="@+id/activity"/>
-                    <TextView
-                        android:layout_width="60dp"
-                        android:gravity="center_horizontal"
-                        android:layout_height="match_parent"
-                        android:id="@+id/select_activity"
-                        android:text="▶"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
+                android:layout_height="wrap_content"
+                android:text="활동"
+                android:textStyle="bold"
+                android:textSize="13dp"
+                android:textColor="#87dff7"
+                android:gravity="center_vertical"
+                android:paddingLeft="4dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="55dp"
-                android:orientation="vertical"
-                android:layout_marginLeft="2dp"
-                android:background="@drawable/border_black">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="세부 카테고리"
-                    android:textStyle="bold"
-                    android:textSize="13dp"
-                    android:textColor="#87dff7"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="4dp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="4dp"
-                        android:gravity="center_vertical"
-                        android:layout_marginRight="4dp"
-                        android:textSize="11dp"
-                        android:id="@+id/activity2"/>
-                    <TextView
-                        android:layout_width="60dp"
-                        android:gravity="center_horizontal"
-                        android:layout_height="match_parent"
-                        android:id="@+id/select_activity2"
-                        android:text="▶"/>
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:weightSum="3"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginRight="3dp"
-                android:background="@drawable/border_black"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="시/도"
-                    android:textSize="13dp"
-                    android:textColor="#87dff7"
-                    android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="4dp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:textSize="12dp"
-                        android:gravity="center_vertical"
-                        android:id="@+id/writing_city1"/>
-                    <TextView
-                        android:layout_width="40dp"
-                        android:gravity="center_horizontal"
-                        android:layout_height="match_parent"
-                        android:id="@+id/select_city1"
-                        android:text="▼"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/border_black"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="시/군/구"
-                    android:textSize="13dp"
-                    android:textColor="#87dff7"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="4dp"
-                    android:textStyle="bold"
-                    android:paddingTop="4dp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:textSize="12dp"
-                        android:gravity="center_vertical"
-                        android:id="@+id/writing_city2"/>
-                    <TextView
-                        android:layout_width="40dp"
-                        android:gravity="center_horizontal"
-                        android:layout_height="match_parent"
-                        android:id="@+id/select_city2"
-                        android:text="▼"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="3dp"
-                android:background="@drawable/border_black"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="세부장소"
-                    android:textSize="13dp"
-                    android:textColor="#87dff7"
-                    android:textStyle="bold"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="4dp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp">
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:textSize="12dp"
-                        android:inputType="text"
-                        android:maxLength="6"
-                        android:gravity="center_vertical"
-                        android:id="@+id/writing_city3"
-                        android:imeOptions="actionDone"
-                        android:hint="예 : 신촌"/>
-
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:inputType="text"
+                android:background="@android:color/transparent"
+                android:textSize="13dp"
+                android:maxLength="100"
+                android:imeOptions="actionDone"
+                android:hint="활동에 대하여 설명해주세요!(20자 이하)"
+                android:id="@+id/activity"/>
         </LinearLayout>
 
         <LinearLayout
@@ -345,7 +159,7 @@
                         android:layout_weight="1"
                         android:textSize="11dp"
                         android:gravity="center_vertical"
-                        android:id="@+id/helloDate"/>
+                        android:id="@+id/meetingDate"/>
                     <TextView
                         android:layout_width="40dp"
                         android:gravity="center_horizontal"
@@ -386,7 +200,7 @@
                         android:layout_weight="1"
                         android:textSize="11dp"
                         android:gravity="center_vertical"
-                        android:id="@+id/helloTime"/>
+                        android:id="@+id/meetingTime"/>
                     <TextView
                         android:layout_width="40dp"
                         android:gravity="center_horizontal"
@@ -426,7 +240,7 @@
                         android:layout_weight="1"
                         android:textSize="11dp"
                         android:gravity="center_vertical"
-                        android:id="@+id/goodbyeTime"/>
+                        android:id="@+id/farewellTime"/>
                     <TextView
                         android:layout_width="40dp"
                         android:gravity="center_horizontal"
@@ -435,6 +249,41 @@
                         android:text="▼"/>
                 </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical"
+            android:background="@drawable/border_black">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="장소"
+                android:textStyle="bold"
+                android:textSize="13dp"
+                android:textColor="#87dff7"
+                android:gravity="center_vertical"
+                android:paddingLeft="4dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:inputType="text"
+                android:background="@android:color/transparent"
+                android:textSize="13dp"
+                android:maxLength="100"
+                android:imeOptions="actionDone"
+                android:hint="만나는 장소에 대하여 설명해주세요!(20자 이하)"
+                android:id="@+id/place"/>
         </LinearLayout>
 
         <LinearLayout
@@ -467,7 +316,7 @@
                 android:textSize="13dp"
                 android:maxLength="100"
                 android:imeOptions="actionDone"
-                android:hint="원하는 활동을 적으세요(10~100자)"
+                android:hint="만남에 대해서 자세히 적어주세요!(200자 이하)"
                 android:id="@+id/text"/>
         </LinearLayout>
 
@@ -490,14 +339,13 @@
             android:layout_marginLeft="16dp"
             android:orientation="horizontal">
             <EditText
-                android:maxLength="6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="13dp"
                 android:maxLines="1"
                 android:inputType="text"
-                android:hint="ex) #서울 (최대 5글자씩 9개)"
+                android:hint="ex)서울 신촌 연세대학교 (최대 10개, 최대 5글자)"
                 android:id="@+id/hashTag"/>
 
             <Button
@@ -531,7 +379,7 @@
             android:textColor="#87dff7"
             android:textStyle="bold"
             android:id="@+id/writing_detail_text"
-            android:text="상세설정"/>
+            android:text="상세 정보"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -558,34 +406,19 @@
                         android:layout_height="wrap_content"
                         android:text="인원 : " />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
+                    <EditText
+                        android:layout_width="55dp"
                         android:layout_height="wrap_content"
-                        android:text="전체 ▼"
+                        android:hint = "3~10"
+                        android:textSize="13dp"
                         android:gravity="center"
+                        android:inputType="numberDecimal"
                         android:id="@+id/detail_1"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="나이 상한 : "
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="전체 ▼"
-                        android:gravity="center"
-                        android:id="@+id/detail_2"/>
+                        android:text="명" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -599,7 +432,6 @@
             android:textColor="#ffffff"
             android:background="#87dff7"
             android:id="@+id/finishWriting" />
-
 
     </LinearLayout>
 </ScrollView>

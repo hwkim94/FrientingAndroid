@@ -115,7 +115,7 @@ public class ChattingActivity extends AppCompatActivity {
         final FirebaseAuth user_auth = FirebaseAuth.getInstance(chattingApp);
 
         actionbar_name.setText("채팅");
-        userDBReference.child(user_auth.getCurrentUser().getUid()).child("Ting").addValueEventListener(new ValueEventListener() {
+        userDBReference.child(user_auth.getCurrentUser().getUid()).child("ting").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer ting_temp = dataSnapshot.getValue(Integer.class);

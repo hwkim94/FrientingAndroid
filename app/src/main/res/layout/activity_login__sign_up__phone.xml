@@ -9,28 +9,43 @@
     android:background="#FEFEFE"
     android:id="@+id/phone_layout"
     tools:context="com.building.frienting001.Login_SignUp_PhoneActivity">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:gravity="center_vertical"
-        android:text="Back"
-        android:textSize="15dp"
-        android:textColor="#87dff7"
-        android:background="@color/color_transparent"
-        android:id="@+id/sup_cancel_button"/>
 
-    <TextView
-        android:paddingTop="30dp"
-        android:paddingBottom="25dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="13dp"
-        android:background="#F7F7F7"
-        android:gravity="center"
-        android:text="프렌팅은 고객들의 안전을 위해 2단계 인증방식을 사용합니다.\n고객님의 번호는 절대로 공개되지 않으며,\n허위/중복가입을 방지하기 위해서만 사용됩니다."/>
-
-
+        android:weightSum="3"
+        android:background="@drawable/login_phone_actionbar_border">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:gravity="center_vertical"
+            android:text="Back"
+            android:textSize="15dp"
+            android:textColor="#87dff7"
+            android:background="@color/color_transparent"
+            android:id="@+id/sup_cancel_button"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="휴대폰 인증"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            android:background="@color/color_transparent"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:gravity="right"
+            android:text="Back"
+            android:textSize="15dp"
+            android:textColor="@color/color_transparent"
+            android:background="@color/color_transparent"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <TextView
         android:layout_marginTop="25dp"
@@ -38,67 +53,95 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:textSize="18dp"
-        android:text="휴대폰 인증"
-        android:textColor="#87dff7" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"
-            android:inputType="text"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:lines = "1"
-            android:textSize="15dp"
-            android:imeOptions="actionDone"
-            android:layout_height="40dp"
-            android:hint="예) 01012345678"
-            android:id="@+id/sup_phone_input"/>
+        android:layout_marginBottom="13dp"
+        android:textSize="11.5dp"
+        android:text="휴대폰 번호"
+        android:textColor="#9b9b9b" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="16dp"
-            android:background="@color/color_transparent"
-            android:textSize="15dp"
-            android:textColor="@color/frienting_widget"
-            android:text="인증번호 전송"
-            android:id="@+id/sup_request_code_button"/>
-    </LinearLayout>
+    <EditText
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:maxLines="1"
+        android:lines = "1"
+        android:textSize="10dp"
+        android:imeOptions="actionDone"
+        android:layout_height="40dp"
+        android:hint="휴대폰 번호 입력"
+        android:id="@+id/sup_phone_input"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical"
         android:id="@+id/sup_code_input_layout"
-        android:visibility="invisible">
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="13dp"
+            android:textSize="11.5dp"
+            android:text="인증번호"
+            android:textColor="#9b9b9b" />
+
         <EditText
             android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="15dp"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="40dp"
-            android:maxLines="1"
-            android:inputType="text"
-            android:lines = "1"
-            android:imeOptions="actionDone"
-            android:hint="인증번호를 입력하세요."
-            android:id="@+id/sup_code_input"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:layout_marginRight="16dp"
-            android:background="@color/color_transparent"
-            android:textSize="15dp"
-            android:textColor="@color/frienting_widget"
-            android:text="확인"
-            android:id="@+id/sup_request_auth_button"/>
+            android:layout_marginBottom="8dp"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:lines = "1"
+            android:textSize="10dp"
+            android:imeOptions="actionDone"
+            android:layout_height="40dp"
+            android:hint="인증번호 입력(3분 이내)"
+            android:id="@+id/sup_auth_input"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="98.3dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="13dp"
+        android:gravity="center"
+        android:textSize="11.5dp"
+        android:text="허위 또는 중복 가입을 막기 위한 절차입니다.\n전화번호는 절대 공개하지 안흡니다."
+        android:textColor="#9b9b9b" />
+
+    <Button
+        android:layout_width="132dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="40.5dp"
+        android:layout_marginBottom="13dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="11.5dp"
+        android:text="전송 / 재전송"
+        android:background="@drawable/login_button_selector"
+        android:textColor="#9b9b9b"
+        android:id="@+id/auth_button1"/>
+
+    <Button
+        android:layout_width="132dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="13dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="11.5dp"
+        android:text="확인"
+        android:background="@drawable/login_button_selector"
+        android:textColor="#9b9b9b"
+        android:id="@+id/auth_button2"
+        android:visibility="gone"/>
+
 
 </LinearLayout>

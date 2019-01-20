@@ -101,7 +101,7 @@ public class NavigationActivity extends AppCompatActivity {
         View custom_actionbar = inflater.inflate(R.layout.actionbar, null);
         title = (TextView)custom_actionbar.findViewById(R.id.n_title);
         ting = (TextView)custom_actionbar.findViewById(R.id.n_ting);
-        user_db_ref.child(user_auth.getCurrentUser().getUid()).child("Ting").addValueEventListener(new ValueEventListener() {
+        user_db_ref.child(user_auth.getCurrentUser().getUid()).child("ting").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Integer ting_temp = dataSnapshot.getValue(Integer.class);

@@ -40,7 +40,7 @@ public class BulletinListAdapter extends RecyclerView.Adapter {
             Glide.with(holder.itemView.getContext()).load(recruit_list.get(position).getImagePath()).into(newHolder.image);
         }
         newHolder.title.setText(recruit_list.get(position).getTitle());
-        newHolder.place.setText(recruit_list.get(position).getPlace().get(2));
+        newHolder.place.setText(recruit_list.get(position).getPlace());
         newHolder.time.setText(recruit_list.get(position).getTimeSearched());
         newHolder.date.setText(recruit_list.get(position).getDateSearched());
 

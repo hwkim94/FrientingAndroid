@@ -116,19 +116,19 @@ public class BulletinBoardFragment extends Fragment {
             vector.add((token.nextToken()));
         }
         try {
-            Query query = databaseReference.orderByChild("helloTIme"); // 오름차순
+            Query query = databaseReference.orderByChild("meetingTime"); // 오름차순
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        final ArrayList<RecruitmentItem> searched_list = new ArrayList<>(); // 후에 json으로 수정하면 좋을듯
+                        final ArrayList<RecruitmentItem> searched_list = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             RecruitmentItem item = snapshot.getValue(RecruitmentItem.class);
 
                             if(item.finished.equals("True")){
                                 continue; // 입장시간이 이미 지난 공고라면 스킵
                             }
-                            if(time_finished(item.getHelloTime())){ // 시간이 이미 지난 공고
+                            if(time_finished(item.getMeetingTime())){ // 시간이 이미 지난 공고
                                 databaseReference.child(item.getRecruitment_key()).child("finished").setValue("True");
                                 continue;
                             }
@@ -136,7 +136,7 @@ public class BulletinBoardFragment extends Fragment {
                             int count = 0;
                             for(int i = 0; i < vector.size(); i++) {
                                 String temp = vector.get(i);
-                                if (item.getTitle().contains(temp) || item.getPlace().get(2).contains(temp) || item.getHashTag().contains(temp)){
+                                if (item.getTitle().contains(temp) || item.getPlace().contains(temp) || item.getHashTag().contains(temp)){
                                     count++;
                                 }
                             }

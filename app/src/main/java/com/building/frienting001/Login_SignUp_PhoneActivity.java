@@ -51,12 +51,12 @@ public class Login_SignUp_PhoneActivity extends AppCompatActivity {
 
         //선언부
         phone_input = (EditText)findViewById(R.id.sup_phone_input);
-        code_input= (EditText)findViewById(R.id.sup_code_input);
+        code_input= (EditText)findViewById(R.id.sup_auth_input);
         code_input_layout = (LinearLayout)findViewById(R.id.sup_code_input_layout);
 
         cancel_button = (Button)findViewById(R.id.sup_cancel_button);
-        request_code_button = (Button)findViewById(R.id.sup_request_code_button);
-        request_auth_button = (Button)findViewById(R.id.sup_request_auth_button);
+        request_code_button = (Button)findViewById(R.id.auth_button1);
+        request_auth_button = (Button)findViewById(R.id.auth_button2);
 
         FirebaseApp userApp = FirebaseApp.getInstance("user");
         user_db_ref = FirebaseDatabase.getInstance(userApp).getReference("user");
@@ -77,7 +77,7 @@ public class Login_SignUp_PhoneActivity extends AppCompatActivity {
         request_code_button.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 phone = phone_input.getText().toString();
+                 phone = phone_input.getText().toString().replace("-","");
                  String regex = "01(0|1|2|6|7|9)[0-9]{7,8}"; //정규표현식
                  if(Pattern.matches(regex, phone)){
                      searchDB(phone);
@@ -137,10 +137,9 @@ public class Login_SignUp_PhoneActivity extends AppCompatActivity {
 
                     Random number = new Random();
                     code = (number.nextInt(1000000) + 100000) % 100000;
-                    Toast.makeText(getApplicationContext(), "SMS 인증번호가 전송되었습니다.", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), "" + code, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), "중복되지 않은 번호입니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "" + code, Toast.LENGTH_LONG).show();
                     code_input_layout.setVisibility(View.VISIBLE);
+                    request_auth_button.setVisibility(View.VISIBLE);
 
                     request_code_button.setText("다시 보내기");
                 }

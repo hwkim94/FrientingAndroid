@@ -10,44 +10,40 @@ public class RecruitmentItem implements Serializable, Comparable{
 
     private String imagePath = "";
     private String title = "";
-    private ArrayList<String> activity = new ArrayList<>();
-    private ArrayList<String> place = new ArrayList<>();
-    private String helloTime = "";
-    private String goodbyeTime = "";
+    private String activity = "";
+    private String place = "";
+    private String meetingTime = "";
+    private String farewellTime = "";
     private String text = "";
     private String hashTag = "";
-    private String nickname = "";
-    private ReviewDialogItem review;
+    private int detail1;
     private String recruitment_key = "";
     private String writer_uid = "";
+    private String nickName = "";
     private ArrayList<String> applicant_uid = new ArrayList<>();
-    public int search_count = 0;
-    public String finished = "false";
 
-    private int detail1, detail2;
+    public int search_count = 0;
+    public String finished = "False";
 
     public RecruitmentItem() {
 
     }
+    public String getNickname(){
+        return this.nickName;
+    }
+    public void setNickname(String nickName){
+        this.nickName = nickName;
+    }
 
-    public ArrayList<String> getPlace() {
+    public String getPlace() {
         return place;
     }
-
-    public String getPlaceName(){
-        return this.place.get(0) + " " + this.place.get(1) + " " + this.place.get(2);
-    }
-
-    public void setPlace(String city1, String city2, String city3) {
-        place.add(city1);
-        place.add(city2);
-        place.add(city3);
-    }
+    public String getPlaceName(){ return this.place;}
+    public void setPlace(String place) { this.place = place; }
 
     public String getImagePath() {
         return imagePath;
     }
-
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
@@ -55,28 +51,22 @@ public class RecruitmentItem implements Serializable, Comparable{
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public ArrayList<String> getActivity() {
+    public String getActivity() {
         return activity;
     }
+    public void setActivity(String activity) { this.activity = activity; }
 
-    public void setActivity(String activity, String detail) {
-        this.activity.add(activity);
-        this.activity.add(detail);
+    public String getMeetingTime() {
+        return meetingTime;
     }
-
-    public String getHelloTime() {
-        return helloTime;
-    }
-
     public String getTimeSearched(){
         String result = "";
-        int hour = (int)this.getHelloTime().charAt(3) - 56;
-        int minute = (int)this.getHelloTime().charAt(4) - 56;
+        int hour = (int)this.getMeetingTime().charAt(3) - 56;
+        int minute = (int)this.getMeetingTime().charAt(4) - 56;
         if(hour >= 12){
             hour = hour - 12;
             result = Integer.toString(hour) + ":" + Integer.toString(minute) + "PM";
@@ -85,8 +75,8 @@ public class RecruitmentItem implements Serializable, Comparable{
             result = Integer.toString(hour) + ":" + Integer.toString(minute) + "AM";
         }
 
-        hour = (int)this.getGoodbyeTime().charAt(3) - 56;
-        minute = (int)this.getGoodbyeTime().charAt(4) - 56;
+        hour = (int)this.getFarewellTime().charAt(3) - 56;
+        minute = (int)this.getFarewellTime().charAt(4) - 56;
         if(hour >= 12){
             hour = hour - 12;
             result += " ~ " + Integer.toString(hour) + ":" + Integer.toString(minute) + "PM";
@@ -99,29 +89,27 @@ public class RecruitmentItem implements Serializable, Comparable{
     }
 
     public String getDateSearched(){
-        int year = (int)(this.getHelloTime().charAt(0)) - 56 + 2000;
-        int month = (int)(this.getGoodbyeTime().charAt(1)) - 56;
-        int day = (int)(this.getGoodbyeTime().charAt(2)) - 56;
+        int year = (int)(this.getMeetingTime().charAt(0)) - 56 + 2000;
+        int month = (int)(this.getMeetingTime().charAt(1)) - 56;
+        int day = (int)(this.getFarewellTime().charAt(2)) - 56;
 
         return year + "." + month + "." + day;
     }
 
-    public void setHelloTime(char year, char month, char day, char hour, char minute) {
-        this.helloTime = year + "" + month + "" + day + "" + hour + "" + minute;
+    public void setMeetingTime(char year, char month, char day, char hour, char minute) {
+        this.meetingTime = year + "" + month + "" + day + "" + hour + "" + minute;
     }
 
-    public String getGoodbyeTime() {
-        return goodbyeTime;
+    public String getFarewellTime() {
+        return farewellTime;
     }
-
-    public void setGoodbyeTime(char year, char month, char day, char hour, char minute) {
-        this.goodbyeTime = year + "" + month + "" + day + "" + hour + "" + minute;
+    public void setFarewellTime(char year, char month, char day, char hour, char minute) {
+        this.farewellTime = year + "" + month + "" + day + "" + hour + "" + minute;
     }
 
     public String getText() {
         return text;
     }
-
     public void setText(String text) {
         this.text = text;
     }
@@ -129,31 +117,13 @@ public class RecruitmentItem implements Serializable, Comparable{
     public String getHashTag() {
         return hashTag;
     }
-
     public void setHashTag(String hashTag) {
         this.hashTag = hashTag;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public ReviewDialogItem getReview() {
-        return review;
-    }
-
-    public void setReview(ReviewDialogItem review) {
-        this.review = review;
     }
 
     public String getRecruitment_key() {
         return recruitment_key;
     }
-
     public void setRecruitment_key(String recruitment_key) {
         this.recruitment_key = recruitment_key;
     }
@@ -161,7 +131,6 @@ public class RecruitmentItem implements Serializable, Comparable{
     public String getWriter_uid() {
         return writer_uid;
     }
-
     public void setWriter_uid(String writer_uid) {
         this.writer_uid = writer_uid;
     }
@@ -170,24 +139,11 @@ public class RecruitmentItem implements Serializable, Comparable{
         return applicant_uid;
     }
 
-    /*public void setApplicant_uid(String applicant_uid) {
-        this.applicant_uid = applicant_uid;
-    }*/
-
     public int getDetail1() {
         return detail1;
     }
-
     public void setDetail1(int detail1) {
         this.detail1 = detail1;
-    }
-
-    public int getDetail2() {
-        return detail2;
-    }
-
-    public void setDetail2(int detail2) {
-        this.detail2 = detail2;
     }
 
     @Override
@@ -197,8 +153,8 @@ public class RecruitmentItem implements Serializable, Comparable{
             return -(this.search_count - search_count); // 내림차순
         }
         for(int i = 0; i < 5; i++){
-            if(this.getHelloTime().charAt(i) != ((RecruitmentItem) o).getHelloTime().charAt(i)){
-                return this.getHelloTime().charAt(i) - ((RecruitmentItem) o).getHelloTime().charAt(i); // 오름차순
+            if(this.getMeetingTime().charAt(i) != ((RecruitmentItem) o).getMeetingTime().charAt(i)){
+                return this.getFarewellTime().charAt(i) - ((RecruitmentItem) o).getFarewellTime().charAt(i); // 오름차순
             }
         }
         return 0;

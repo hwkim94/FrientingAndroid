@@ -19,7 +19,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,41 +47,33 @@ import com.google.firebase.storage.UploadTask;
 //import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class WritingFragment extends Fragment {
-    private Map<String, String[]> dialog_table;
+    private EditText titleEditText;
     private ImageView photoImageView;
     private String imagePath = "";
     private Button photoButton;
-    private EditText titleEditText;
-    private TextView activityTextView;
-    private TextView activitySelectTextView;
-    private TextView activityTextView2;
-    private TextView activitySelectTextView2;
+    private TextView activityEditText;
     private TextView meetingDateTextView;
     private TextView meetingTimeTextView;
     private TextView meetingTimeTextView2;
     private TextView meetingDateSelectTextView;
     private TextView meetingTimeSelectTextView;
     private TextView meetingTimeSelectTextView2;
-    private TextView meetingCityTextView;
-    private TextView meetingCityTextView2;
-    private EditText meetingCityEditView;
-    private TextView meetingCitySelectTextview;
-    private TextView meetingCitySelectTextView2;
-
-    private TextView detailTextView;
-    private TextView detailTectVIew2;
-
+    private EditText placeEditText;
     private EditText recruitmentTextEditText;
-    private EditText hashtagEditText;
+    private EditText hashTagEditText;
+    private Button hashTagButton;
+    private RecyclerView written_tag;
+    private HashTagWritingAdapter hashTagWritingAdapter;
+    private TextView detailEditText;
     private Button finishButton;
-
     private LinearLayout layout;
 
     private DatabaseReference userDBReference;
@@ -90,7 +81,6 @@ public class WritingFragment extends Fragment {
     private String key;
 
     private StorageReference storageReference;
-
     private InputMethodManager imm;
 
     private final int CAMERA_INTENT_CODE = 8000;
@@ -100,66 +90,33 @@ public class WritingFragment extends Fragment {
 
     final char[] meeting_time = new char[5];
     final char[] farewell_time = new char[5];
-
     final int[] fail = {0};
+
+    private UserInfo userInfo;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_writing, container, false);
 
-        dialog_table = new HashMap<>(); // 파일로 만들어 읽어들여도 될듯
-        dialog_table.put("도시", new String[]{"서울", "인천", "부산", "대구", "광주", "대전", "울산","제주", "경기", "강원", "충북", "충남", "전북", "전남", "경북", "경남"});
-        dialog_table.put("서울", new String[]{"종로구", "중구", "용산구", "성동구", "광진구", "동대문구", "중랑구", "성북구", "강북구", "도봉구", "노원구", "은평구", "서대문구", "마포구", "양천구", "강서구", "구로구", "금천구", "영등포구", "동작구", "관악구", "서초구", "강남구", "송파구", "강동구"});
-        dialog_table.put("인천", new String[]{"중구", "동구", "남구", "연수구", "남동구", "부평구", "서구", "강화군", "웅진군"});
-        dialog_table.put("부산", new String[]{"중구", "서구", "동구", "영도구", "부산진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장구"});
-        dialog_table.put("대구", new String[]{"중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군"});
-        dialog_table.put("광주", new String[]{"동구", "남구", "서구", "북구", "광산구"});
-        dialog_table.put("대전", new String[]{"동구", "중구", "서구", "유성구", "대덕구"});
-        dialog_table.put("울산", new String[]{"동구", "중구", "북구", "남구", "울주군"});
-        dialog_table.put("제주", new String[]{"제주시", "서귀포시"});
-        dialog_table.put("경기", new String[]{"수원시", "성남시", "의정부시", "안양시", "부천시", "광명시", "평택시", "동두천시", "안산시", "고양시", "과천시", "구리시", " 남양주시", "오산시", "시흥시", "군포시", "의왕시", "하남시", "용인시", "파주시", "이천시", "김포시","화성시", "광주시", "양주시", "포천시","여주시","연천시", "가평군", "양평군"});
-        dialog_table.put("강원", new String[]{"춘천시", "원주시", "강릉시", "동해시", "태백시", "속초시", "삼척시", "홍천군", "횡성군", "영월군", "평창군", "정선군", "철원군", "화천군", "양구군", "인제군", "고성군", "양양군"});
-        dialog_table.put("충북", new String[]{"청주시", "충주시", "제천시", "청원군", "보은군", "영동군", "옥천군", "진천군" ,"증평군", "괴산군", "단양군", "음성군"});
-        dialog_table.put("충남", new String[]{"천안시", "공주시", "아산시", "보령시", "서산시", "논산시", "계룡시", "금산군", "연기군", "부여군", "서천군", "청양군", "홍성군", "예산군", "태안군", "당진군"});
-        dialog_table.put("전북", new String[]{"전주시", "군산시", "익산시", "정읍시", "남원시", "김제시", "완주군", "진안군", "무주군", "장수군", "임실군", "순창군", "고창군", "부안군"});
-        dialog_table.put("전남", new String[]{"목포시", "여수시", "순천시", "나주시", "광양시", "담양군", "곡성군", "구례군", "고흥군", "보성군", "화순군", "장흥군", "강진군", "헤남군", "영암군", "무안군", "함평군", "영광군", "장성군", "완도군", "진도군", "신안군"});
-        dialog_table.put("경북", new String[]{"포항시", "경주시", "김천시", "안동시", "구미시", "영주시", "영천시", "상주시", "문경시", "경산시", "군위군", "의성군", "청송군", "영양군", "청도군", "고량군", "성주군", "칠곡군", "예천군", "봉화군", "울진군", "울릉군"});
-        dialog_table.put("경남", new String[]{"마산시", "진주시", "창원시", "진해시", "통영시", "사천시", "김해시", "밀양시", "거제시", "양산시", "의령군", "함안군", "창녕군", "고성군", "남해군", "하동군", "산청군", "함양군", "거창군", "합천군"});
-
-        dialog_table.put("인원", new String[]{"2", "3", "4", "5", "6", "7", "8", "9", "10"});
-        dialog_table.put("나이", new String[]{"전체", "20", "25", "30", "35", "40", "45", "50"});
-
-        dialog_table.put("활동", new String[]{"스포츠", "학업", "엔터테인먼트(취미)", "식사"});
-        dialog_table.put("스포츠", new String[]{"축구", "풋살","농구", "당구", "탁구", "족구", "볼링", "골프", "야구", "배드민턴", "테니스", "수영", "요트", "카누", "서핑", "스쿠버다이빙", "빠지", "스케이트보드", "따릉이", "자전거", "헬스", "요가", "필라테스", "달리기","주짓수", "권투", "클라이밍", "스카이다이빙", "패러글라이딩"});
-        dialog_table.put("학업", new String[]{"코딩", "주식", "고시", "면접", "자격증", "취업"});
-        dialog_table.put("엔터테인먼트(취미)", new String[]{"영화", "뮤지컬", "놀이동산", "콘서트", "전시회", "쇼핑", "미술관", "꽃&자수&공예", "게임", "오락실", "여행", "댄스", "클럽", "독서", "요리&베이킹", "만화&애니"});
-        dialog_table.put("식사", new String[]{"주류", "한식", "중식", "일식", "양식", "베트남", "타이", "멕시코", "퓨전", "이색음식", "건강식", "채식", "기타"});
-
         //선언부
         layout = (LinearLayout)view.findViewById(R.id.total_layout);
+        titleEditText = (EditText)view.findViewById(R.id.title);
         photoImageView = (ImageView)view.findViewById(R.id.photo);
         photoButton = (Button)view.findViewById(R.id.choosePhotoBtn);
-        titleEditText = (EditText)view.findViewById(R.id.title);
-        activityTextView = (TextView)view.findViewById(R.id.activity);
-        activityTextView2 = (TextView)view.findViewById(R.id.activity2);
-        activitySelectTextView = (TextView)view.findViewById(R.id.select_activity);
-        activitySelectTextView2 = (TextView)view.findViewById(R.id.select_activity2);
-        meetingDateTextView = (TextView)view.findViewById(R.id.helloDate);
-        meetingTimeTextView = (TextView)view.findViewById(R.id.helloTime);
-        meetingTimeTextView2 = (TextView)view.findViewById(R.id.goodbyeTime);
+        activityEditText = (EditText)view.findViewById(R.id.activity);
+        meetingDateTextView = (TextView)view.findViewById(R.id.meetingDate);
+        meetingTimeTextView = (TextView)view.findViewById(R.id.meetingTime);
+        meetingTimeTextView2 = (TextView)view.findViewById(R.id.farewellTime);
         meetingDateSelectTextView = (TextView)view.findViewById(R.id.select_date);
         meetingTimeSelectTextView = (TextView)view.findViewById(R.id.select_time1);
         meetingTimeSelectTextView2 = (TextView)view.findViewById(R.id.select_time2);
-        meetingCityTextView = (TextView)view.findViewById(R.id.writing_city1);
-        meetingCityTextView2 = (TextView)view.findViewById(R.id.writing_city2);
-        meetingCityEditView = (EditText) view.findViewById(R.id.writing_city3);
-        meetingCitySelectTextview = (TextView)view.findViewById(R.id.select_city1);
-        meetingCitySelectTextView2 = (TextView)view.findViewById(R.id.select_city2);
+        placeEditText = (EditText) view.findViewById(R.id.place);
         recruitmentTextEditText = (EditText)view.findViewById(R.id.text);
-        hashtagEditText = (EditText)view.findViewById(R.id.hashTag);
+        hashTagEditText = (EditText)view.findViewById(R.id.hashTag);
+        hashTagButton = (Button)view.findViewById(R.id.add_tag);
+        written_tag = (RecyclerView)view.findViewById(R.id.hashTag_written);
+        detailEditText = (EditText)view.findViewById(R.id.detail_1);
         finishButton = (Button)view.findViewById(R.id.finishWriting);
-
-        detailTextView = (TextView)view.findViewById(R.id.detail_1);
-        detailTectVIew2 = (TextView)view.findViewById(R.id.detail_2);
 
         imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
 
@@ -171,59 +128,38 @@ public class WritingFragment extends Fragment {
         recruitmentDBReference = FirebaseDatabase.getInstance(userApp).getReference().child("recruitment");
         storageReference = FirebaseStorage.getInstance(userApp).getReferenceFromUrl("gs://frientinguser.appspot.com");
 
+        userDBReference.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userInfo = dataSnapshot.getValue(UserInfo.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
         layout.setOnClickListener(new View.OnClickListener() { // 키보드 설정
             @Override
             public void onClick(View v) {
                 imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
-                imm.hideSoftInputFromWindow(meetingCityEditView.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(placeEditText.getWindowToken(), 0);
                 imm.hideSoftInputFromWindow(recruitmentTextEditText.getWindowToken(), 0);
-                imm.hideSoftInputFromWindow(hashtagEditText.getWindowToken(), 0);
-            }
-        });
-
-        meetingCitySelectTextview.setOnClickListener(new View.OnClickListener() { //만나는 장소 설정
-            @Override
-            public void onClick(View v) {
-                makingListDialog(1, dialog_table.get("도시"),2);
-            }
-        });
-        meetingCitySelectTextView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (meetingCityTextView.getText().toString().equals("")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "시/도 단위를 먼저 골라주세요.", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    String temp = meetingCityTextView.getText().toString();
-                    makingListDialog(2, dialog_table.get(temp), 3);
-                }
-            }
-        });
-
-        detailTextView.setOnClickListener(new View.OnClickListener() { //세부설정
-            @Override
-            public void onClick(View v) {
-                makingDialog(dialog_table.get("인원"), 1);
-            }
-        });
-        detailTectVIew2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makingDialog(dialog_table.get("나이"), 2);
+                imm.hideSoftInputFromWindow(hashTagEditText.getWindowToken(), 0);
             }
         });
 
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { // 추후에 분기 나누기 - 무엇이 잘못되었는지 알 수 있또록
-                /*if (titleEditText.getText().length() < 5 | activityTextView.getText().length() < 2 | meetingCityTextView.getText().length() < 2
-                        | meetingCityTextView2.getText().length() < 2 | meetingCityEditView.getText().length() < 2 | meetingDateTextView.getText().length() < 2
-                        | meetingTimeTextView.getText().length() < 2 | meetingTimeTextView2.getText().length() < 2 | recruitmentTextEditText.getText().length() < 10) {
+            public void onClick(View v) {
+                if (!(0 < titleEditText.getText().length() || titleEditText.getText().length() < 20 ||
+                        0 < activityEditText.getText().length() || activityEditText.getText().length() < 2 ||
+                        0 < placeEditText.getText().length() || placeEditText.getText().length() < 2 ||
+                        meetingDateTextView.getText().length() < 2 || meetingTimeTextView.getText().length() < 2 || meetingTimeTextView2.getText().length() < 2 ||
+                        recruitmentTextEditText.getText().length() < 200)) {
                     Toast.makeText(getActivity().getApplicationContext(), "잘못된 형식입니다.", Toast.LENGTH_SHORT).show();
-                }
-                else {*/
+
+                } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("매칭 신청을 완료하시겠습니까?");
+                        builder.setTitle("공고 작성을 완료하시겠습니까?");
                         builder.setMessage("확인 버튼을 누르실 경우 20팅이 소모됩니다.");
                         builder.setCancelable(false);
 
@@ -233,17 +169,18 @@ public class WritingFragment extends Fragment {
                                 userDBReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        UserInfo user_data = dataSnapshot.getValue(UserInfo.class);
-                                        for(int i = 0; i < user_data.recruit_progress.size(); i++) {
-                                            if (strComp(meeting_time, user_data.recruit_progress.get(i).get(2)) == 1 ||
-                                                    strComp(farewell_time, user_data.recruit_progress.get(i).get(1)) == -1) { // 겹치는 약속 없음
+                                        userInfo = dataSnapshot.getValue(UserInfo.class);
+                                        for(int i = 0; i < userInfo.recruit_progress.size(); i++) {
+                                            if (strComp(meeting_time, userInfo.recruit_progress.get(i).get(2)) == 1 ||
+                                                    strComp(farewell_time, userInfo.recruit_progress.get(i).get(1)) == -1) { // 겹치는 약속 없음
                                             } else {
                                                 //겹치는 약속을 보여주기 -> i번째 recruit_process 그냥 보여주면 됨.
                                                 Toast.makeText(getActivity().getApplicationContext(), "겹치는 약속이 있습니다.", Toast.LENGTH_SHORT).show();
                                                 return; // 마무리
                                             }
                                         }
-                                        int ting = user_data.Ting;
+                                        int ting = userInfo.ting;
+
                                         if (ting < 20) {
                                             dialogInterface.cancel();
                                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -287,29 +224,12 @@ public class WritingFragment extends Fragment {
                             }
                         });
                         builder.create().show();
-                    }
-            //}
-        });
-
-        activitySelectTextView.setOnClickListener(new View.OnClickListener() { //활동선택을 하는 다이얼로그
-            @Override
-            public void onClick(View v) {
-                makingListDialog(4, dialog_table.get("활동"), 2);
-            }
-        });
-        activitySelectTextView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (activityTextView.getText().toString().equals("")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "활동 카테고리을 먼저 골라주세요.", Toast.LENGTH_SHORT).show();
-                }else{
-                    String temp = activityTextView.getText().toString();
-                    makingListDialog(3, dialog_table.get(temp), 3);
                 }
             }
         });
 
-        meetingDateSelectTextView.setOnClickListener(new View.OnClickListener() { // 날짜 선택
+        // 날짜 선택
+        meetingDateSelectTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
@@ -367,10 +287,49 @@ public class WritingFragment extends Fragment {
                 alert.show();
             }
         };
+
         meetingTimeSelectTextView.setOnClickListener(time_listener);
         meetingTimeSelectTextView2.setOnClickListener(time_listener);
 
-        photoButton.setOnClickListener(new View.OnClickListener() { //사진 가져오는 코드
+        //해시태그 추가
+        List<String> list = new ArrayList<>();
+        hashTagWritingAdapter= new HashTagWritingAdapter(getActivity(), list);
+
+        written_tag.setHasFixedSize(false);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL);
+        written_tag.setLayoutManager(layoutManager);
+        written_tag.setAdapter(hashTagWritingAdapter);
+
+        hashTagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (hashTagWritingAdapter.getItemCount() <10) {
+                    String[] tags = hashTagEditText.getText().toString().split(" ,");
+                    for(String tag : tags) {
+                        if (tag.length() <= 5) {
+                            if (tag.startsWith("#")) {
+                                Pattern pattern = Pattern.compile("(#[가-힣ㄱ-ㅎa-zA-Z0-9]{1,6})");
+                                Matcher matcher = pattern.matcher(tag);
+                                while (matcher.find()) {
+                                    hashTagWritingAdapter.addItem(matcher.group(1));
+                                }
+
+                            } else {
+                                Pattern pattern = Pattern.compile("([가-힣ㄱ-ㅎa-zA-Z0-9]{1,6})");
+                                Matcher matcher = pattern.matcher(tag);
+                                while (matcher.find()) {
+                                    hashTagWritingAdapter.addItem("#" + matcher.group(1));
+                                }
+                            }
+                        }
+                    }
+                    hashTagEditText.setText("");
+                }else{Toast.makeText(getActivity().getApplicationContext(), "최대 10개까지 추가가능합니다.", Toast.LENGTH_SHORT).show();}
+            }
+        });
+
+        //사진 가져오는 코드
+        photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), R.layout.support_simple_spinner_dropdown_item);
@@ -412,25 +371,26 @@ public class WritingFragment extends Fragment {
 
         recruitment_item.setImagePath(uri);
         recruitment_item.setTitle(titleEditText.getText().toString());
-        recruitment_item.setActivity(activityTextView.getText().toString(), activityTextView2.getText().toString());
-        recruitment_item.setPlace(meetingCityTextView.getText().toString(), meetingCityTextView2.getText().toString(), meetingCityEditView.getText().toString());
-        recruitment_item.setHelloTime(meeting_time[0], meeting_time[1], meeting_time[2], meeting_time[3], meeting_time[4]);
-        recruitment_item.setGoodbyeTime(farewell_time[0], farewell_time[1], farewell_time[2], farewell_time[3], farewell_time[4]);
+        recruitment_item.setActivity(activityEditText.getText().toString());
+        recruitment_item.setPlace(placeEditText.getText().toString());
+        recruitment_item.setMeetingTime(meeting_time[0], meeting_time[1], meeting_time[2], meeting_time[3], meeting_time[4]);
+        recruitment_item.setFarewellTime(farewell_time[0], farewell_time[1], farewell_time[2], farewell_time[3], farewell_time[4]);
         recruitment_item.setText(recruitmentTextEditText.getText().toString());
-        recruitment_item.setHashTag(hashtagEditText.getText().toString());
+
+        String s_hashTag = "";
+        List<String> list = hashTagWritingAdapter.getList();
+        if(!list.isEmpty()){
+            for (String str : list){
+                if (s_hashTag.equals("")){s_hashTag = str;}
+                else{s_hashTag = s_hashTag + " " + str;}
+            }
+        }
+        recruitment_item.setHashTag(s_hashTag);
+        recruitment_item.setDetail1(Integer.valueOf(detailEditText.getText().toString()));
         recruitment_item.setRecruitment_key(key);
         recruitment_item.setWriter_uid(current_user_id);
-        //recruitment_item.setNickname(firebaseAuth.getCurrentUser().getDisplayName());
         recruitment_item.getApplicant_uid().add(current_user_id);
-
-        String s_detail2 = detailTectVIew2.getText().toString();
-        int i_detail2 = 30; // 추후 수정 지금은 무조건 30
-        if(s_detail2.equals("전체")){
-            i_detail2 = 50;
-        }
-        recruitment_item.setDetail1(Integer.parseInt(detailTextView.getText().toString()));
-        recruitment_item.setDetail2(i_detail2);
-        //ReviewDialogItem reviewDialogItem = userInfo.getReview();
+        recruitment_item.setNickname(userInfo.name);
 
         if(uri.equals("")){ // 사진 없으면
             userDBReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -440,11 +400,11 @@ public class WritingFragment extends Fragment {
                     recruitmentDBReference.child(key).setValue(recruitment_item);
                     final ArrayList<String> temp = new ArrayList<>();
                     temp.add(key);
-                    temp.add(recruitment_item.getHelloTime());
-                    temp.add(recruitment_item.getGoodbyeTime());
+                    temp.add(recruitment_item.getMeetingTime());
+                    temp.add(recruitment_item.getFarewellTime());
                     data.recruit_progress.add(temp);
                     userDBReference.setValue(data);
-                    userDBReference.child("Ting").setValue(data.Ting - 20);
+                    userDBReference.child("ting").setValue(data.ting - 20);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) { }
@@ -478,11 +438,11 @@ public class WritingFragment extends Fragment {
                             recruitmentDBReference.child(key).setValue(recruitment_item);
                             final ArrayList<String> temp = new ArrayList<>();
                             temp.add(key);
-                            temp.add(recruitment_item.getHelloTime());
-                            temp.add(recruitment_item.getGoodbyeTime());
+                            temp.add(recruitment_item.getMeetingTime());
+                            temp.add(recruitment_item.getFarewellTime());
                             data.recruit_progress.add(temp);
                             userDBReference.setValue(data);
-                            userDBReference.child("Ting").setValue(data.Ting - 20);
+                            userDBReference.child("ting").setValue(data.ting - 20);
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) { }
@@ -531,79 +491,6 @@ public class WritingFragment extends Fragment {
         }
     }
 
-    private void makingDialog(final String[] items, final int flag){
-        // 나중에 나눠야 함. 연령제한에도 인원 수 선택하라 나옴
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle("인원 수를 선택하세요.").setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position) {
-                if(flag == 1){
-                    detailTextView.setText(items[position]); // 버튼 추가할 것(세모모양 원래 있었는데 없앴음. 인트 파싱 오류때문에)
-                }
-                else{
-                    detailTectVIew2.setText(items[position]);
-                }
-            }
-        }).create().show();
-    }
-
-    private void makingListDialog(final int id, final String[] lst, int num){
-        StaggeredGridLayoutManager layoutManager;
-        RecyclerView recyclerView;
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View convertView = (View) inflater.inflate(R.layout.select_activity_dialog_layout, null);
-        TextView dialog_name = (TextView)convertView.findViewById(R.id.dialog_name);
-        final TextView dialog_selected = (TextView)convertView.findViewById(R.id.dialog_selected);
-
-        if(id != 3) {
-            dialog_name.setText("지역 선택");
-        }else{
-            dialog_name.setText("카테고리 선택");
-        }
-
-        final ArrayList<String> activity_lst = new ArrayList<>(Arrays.asList(lst));
-        DialogListAdapter adapter;
-        adapter = new DialogListAdapter(getActivity(), activity_lst);
-        adapter.setItemClick(new DialogListAdapter.ItemClick() {
-            @Override
-            public void onClick(View view, int position) {
-                dialog_selected.setText(activity_lst.get(position));
-            }
-        });
-
-        recyclerView = (RecyclerView)convertView.findViewById(R.id.dialog_list);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new StaggeredGridLayoutManager(num, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-        alertDialog.setView(convertView);
-        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String string_temp = dialog_selected.getText().toString();
-                switch (id){
-                    case 1 :
-                        meetingCityTextView.setText(string_temp);
-                        makingListDialog(2, dialog_table.get(string_temp), 3);
-                        break;
-                    case 2 :
-                        meetingCityTextView2.setText(string_temp);
-                        break;
-                    case 3 :
-                        activityTextView2.setText(string_temp);
-                        break;
-                    case 4 :
-                        activityTextView.setText(string_temp);
-                        makingListDialog(3, dialog_table.get(string_temp), 3);
-                        break;
-                }
-            }
-        });
-        alertDialog.show();
-    }
     public Uri getImageUri(Context context, Bitmap inImage) { //Uri 가져오는 함수
         //ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);

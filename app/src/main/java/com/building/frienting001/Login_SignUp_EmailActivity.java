@@ -2,11 +2,14 @@ package com.building.frienting001;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,10 +24,13 @@ import java.util.regex.Pattern;
 
 public class Login_SignUp_EmailActivity extends AppCompatActivity {
     private EditText email_input, password_input, password_check_input;
+    private CheckBox cb1, cb2;
+    private CompoundButton.OnCheckedChangeListener onCheckedChangeListener;
 
     private FirebaseAuth user_auth;
     private ProgressDialog dialog;
     private String phone;
+    private String sex;
 
     Frequent frequent = new Frequent();
 
@@ -40,11 +46,55 @@ public class Login_SignUp_EmailActivity extends AppCompatActivity {
         user_auth = FirebaseAuth.getInstance(userApp);
 
         //선언부
-        email_input = (EditText)findViewById(R.id.sue_email_input);
-        password_input = (EditText)findViewById(R.id.sue_password_input);
-        password_check_input = (EditText)findViewById(R.id.sue_password_check_input);
+        email_input = (EditText)findViewById(R.id.login_email);
+        password_input = (EditText)findViewById(R.id.login_password);
+        password_check_input = (EditText)findViewById(R.id.login_password2);
+        cb1 = (CheckBox)findViewById(R.id.checkBox1);
+        cb2 = (CheckBox)findViewById(R.id.checkBox2);
 
-        Button complete_button = (Button)findViewById(R.id.sue_complete_button);
+        onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switch(buttonView.getId()){
+                    case R.id.checkBox1:
+                        if(isChecked){
+                            cb1.setChecked(true);
+                            cb1.setTypeface(Typeface.DEFAULT_BOLD);
+                            cb2.setChecked(false);
+                            cb2.setTypeface(Typeface.DEFAULT);
+                            sex = "male";
+                        }else{
+                            cb1.setChecked(false);
+                            cb1.setTypeface(Typeface.DEFAULT);
+                            cb2.setChecked(true);
+                            cb2.setTypeface(Typeface.DEFAULT_BOLD);
+                            sex = "female";
+                        }
+                        break;
+
+                    case R.id.checkBox2:
+                        if(isChecked){
+                            cb1.setChecked(false);
+                            cb1.setTypeface(Typeface.DEFAULT);
+                            cb2.setChecked(true);
+                            cb2.setTypeface(Typeface.DEFAULT_BOLD);
+                            sex = "female";
+                        }else{
+                            cb1.setChecked(true);
+                            cb1.setTypeface(Typeface.DEFAULT_BOLD);
+                            cb2.setChecked(false);
+                            cb2.setTypeface(Typeface.DEFAULT);
+                            sex = "male";
+                        }
+                        break;
+                    }
+            }
+        };
+
+        cb1.setOnCheckedChangeListener(onCheckedChangeListener);
+        cb2.setOnCheckedChangeListener(onCheckedChangeListener);
+
+        Button complete_button = (Button)findViewById(R.id.sign_up_finish_button);
         Button cancel_button = (Button)findViewById(R.id.sue_cancel_button);
         phone = this.getIntent().getStringExtra("phone");
 
@@ -63,10 +113,14 @@ public class Login_SignUp_EmailActivity extends AppCompatActivity {
                     String password_regex = "^(?=.*[a-zA-Z])((?=.*\\d)|(?=.*\\W)).{6,20}$";
                     if (Pattern.matches(email_regex, email)) { //정규표현식과 input 비교
                         if(Pattern.matches(password_regex, password)){
-                            dialog = new ProgressDialog(Login_SignUp_EmailActivity.this);
-                            dialog.setMessage("회원정보 불러오는 중...");
-                            dialog.show();
-                            createUser(email, password);
+                            if(!sex.equals("")) {
+                                dialog = new ProgressDialog(Login_SignUp_EmailActivity.this);
+                                dialog.setMessage("회원정보 불러오는 중...");
+                                dialog.show();
+                                createUser(email, password, sex);
+                            }else{
+                                Toast.makeText(getApplicationContext(), "성별을 체크해주세요.", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "잘못된 비밀번호 형식입니다.", Toast.LENGTH_SHORT).show();
                         }
@@ -90,7 +144,7 @@ public class Login_SignUp_EmailActivity extends AppCompatActivity {
     }
 
     //회원정보 생성
-    private void createUser(final String email, final String password){
+    private void createUser(final String email, final String password, final String sex){
         user_auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -109,6 +163,8 @@ public class Login_SignUp_EmailActivity extends AppCompatActivity {
                     Intent intent = new Intent(Login_SignUp_EmailActivity.this, LoginActivity.class);
                     UserInfo user_info = new UserInfo();
                     user_info.phone = phone;
+                    user_info.sex = sex;
+                    user_info.ting = 20;
                     intent.putExtra("UserInfo", user_info);
                     startActivity(intent);
                     finish();
